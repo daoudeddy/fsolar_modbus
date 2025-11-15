@@ -1,57 +1,30 @@
 """Sensor platform for fsolar_modbus."""
 
-from __future__ import annotations
+import logging
 
-from typing import TYPE_CHECKING
+from homeassistant.components.sensor import SensorEntity
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from .common.types import HassData
+from .const import DOMAIN
+from .entities.connection_status_sensor import ConnectionStatusSensor
+from .inverter_profiles import create_entities
 
-from .entity import IntegrationBlueprintEntity
-
-if TYPE_CHECKING:
-    from homeassistant.core import HomeAssistant
-    from homeassistant.helpers.entity_platform import AddEntitiesCallback
-
-    from .coordinator import BlueprintDataUpdateCoordinator
-    from .data import IntegrationBlueprintConfigEntry
-
-ENTITY_DESCRIPTIONS = (
-    SensorEntityDescription(
-        key="fsolar_modbus",
-        name="Integration Sensor",
-        icon="mdi:format-quote-close",
-    ),
-)
+_LOGGER = logging.getLogger(__package__)
 
 
-async def async_setup_entry(
-    hass: HomeAssistant,  # noqa: ARG001 Unused function argument: `hass`
-    entry: IntegrationBlueprintConfigEntry,
-    async_add_entities: AddEntitiesCallback,
-) -> None:
-    """Set up the sensor platform."""
-    async_add_entities(
-        IntegrationBlueprintSensor(
-            coordinator=entry.runtime_data.coordinator,
-            entity_description=entity_description,
-        )
-        for entity_description in ENTITY_DESCRIPTIONS
-    )
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_devices: AddEntitiesCallback) -> None:
+    """Setup sensor platform."""
 
+    hass_data: HassData = hass.data[DOMAIN]
+    controllers = hass_data[entry.entry_id]["controllers"]
 
-class IntegrationBlueprintSensor(IntegrationBlueprintEntity, SensorEntity):
-    """fsolar_modbus Sensor class."""
-
-    def __init__(
-        self,
-        coordinator: BlueprintDataUpdateCoordinator,
-        entity_description: SensorEntityDescription,
-    ) -> None:
-        """Initialize the sensor class."""
-        super().__init__(coordinator)
-        self.entity_description = entity_description
-
-    @property
-    def native_value(self) -> str | None:
-        """Return the native value of the sensor."""
-        return self.coordinator.data.get("body")
+    for controller in controllers:
+        async_add_devices([ConnectionStatusSensor(controller)])
+        # We have to add sensors which don't depend on other sensors, before we add the sensors which *do* depend on
+        # other sensors (like the integration sensors), otherwise HA crashes when trying to create the IntegrationSensor
+        # because it can't find the sensor it depends on. See https://github.com/comcowo/fsolar_modbus/issues/886
+        async_add_devices(create_entities(SensorEntity, controller, filter_depends_on_other_entites=False))
+        async_add_devices(create_entities(SensorEntity, controller, filter_depends_on_other_entites=True))

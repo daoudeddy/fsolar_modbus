@@ -1,0 +1,48 @@
+[tool.mypy]
+strict = true
+allow_subclassing_any = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = false
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+namespace_packages = true
+explicit_package_bases = true
+exclude = [
+    'custom_components/fsolar_modbus/vendor',
+]
+
+[[tool.mypy.overrides]]
+module = 'serial.*'
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = 'custom_components.fsolar_modbus.vendor.*'
+follow_imports = 'skip'
+
+[tool.ruff]
+lint.select = ["E", "F", "I", "N", "ANN", "S", "B", "A", "COM", "C4", "DTZ", "ISC", "ICN", "G",
+    "PIE", "PYI", "RET", "SLF", "SIM", "ARG", "PTH", "PLE", "PLC", "PLW", "FLY", "RUF"]
+lint.ignore = [
+    "ANN401", # any-type
+    "S101", # assert
+    "SIM108", # if-else-block-instead-of-if-exp
+    "COM812", # misisng-trailing-comma
+    "PLW2901", # redefiend-loop-name
+    "RET504", # unnecessary-assign
+]
+lint.unfixable = [
+    "F841", # unused-variable
+]
+line-length = 120
+extend-exclude = [
+    'custom_components/fsolar_modbus/vendor',
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

@@ -1,46 +1,101 @@
-# Notice
+# FSolar - Modbus
 
-The component and platforms in this repository are not meant to be used by a
-user, but as a "blueprint" that custom component developers can build
-upon, to make more awesome stuff.
+[![GitHub Release][releases-shield]][releases]
+[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
+[![Community Forum][forum-shield]][forum]
 
-HAVE FUN! 😎
+\*\* **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by FSolar** \*\*
 
-## Why?
+## Introduction
 
-This is simple, by having custom_components look (README + structure) the same
-it is easier for developers to help each other and for users to start using them.
+A Home Assistant custom component which communicates with FSolar H-series inverters and derivatives without using FSolar's cloud.
 
-If you are a developer and you want to add things to this "blueprint" that you think more
-developers will have use for, please open a PR to add it :)
+This means that you're not reliant on FSolar's cloud infrastructure, so HA keeps working when the cloud goes down.
+You can also read solar production etc in real-time, rather than once every 5 minutes.
 
-## What?
+Depending on your inverter model, you can also set charge periods, work mode, min/max SoC.
+See [Supported Features](https://github.com/comcowo/fsolar_modbus/wiki/Supported-Features).
 
-This repository contains multiple files, here is a overview:
+Supported models:
 
-File | Purpose | Documentation
--- | -- | --
-`.devcontainer.json` | Used for development/testing with Visual Studio Code. | [Documentation](https://code.visualstudio.com/docs/remote/containers)
-`.github/ISSUE_TEMPLATE/*.yml` | Templates for the issue tracker | [Documentation](https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository)
-`custom_components/fsolar_modbus/*` | Integration files, this is where everything happens. | [Documentation](https://developers.home-assistant.io/docs/creating_component_index)
-`CONTRIBUTING.md` | Guidelines on how to contribute. | [Documentation](https://help.github.com/en/github/building-a-strong-community/setting-guidelines-for-repository-contributors)
-`LICENSE` | The license file for the project. | [Documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)
-`README.md` | The file you are reading now, should contain info about the integration, installation and configuration instructions. | [Documentation](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
-`requirements.txt` | Python packages used for development/lint/testing this integration. | [Documentation](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+- FSolar H1 (including AC1, AIO-H1 and G2)
+- FSolar H3 (including AC3 and AOI-H3)
+- FSolar H3 PRO
+- FSolar KH
+- Kuara H3
+- Sonnenkraft SK-HWR
+- STAR
+- Solavita SP
+- a-TroniX AX
+- Enpal
+- 1KOMMA5°
 
-## How?
+You will need a direct connection to your inverter.
+In most cases, this means buying a modbus to ethernet/USB adapter and wiring this to a port on your inverter.
+See the documentation for details.
 
-1. Create a new repository in GitHub, using this repository as a template by clicking the "Use this template" button in the GitHub UI.
-1. Open your new repository in Visual Studio Code devcontainer (Preferably with the "`Dev Containers: Clone Repository in Named Container Volume...`" option).
-1. Rename all instances of the `fsolar_modbus` to `custom_components/<your_integration_domain>` (e.g. `custom_components/awesome_integration`).
-1. Rename all instances of the `Integration Blueprint` to `<Your Integration Name>` (e.g. `Awesome Integration`).
-1. Run the `scripts/develop` to start HA and test out your new integration.
+**[See the wiki](https://github.com/comcowo/fsolar_modbus/wiki) for how-to articles and FAQs.**
 
-## Next steps
+## Installation
 
-These are some next steps you may want to look into:
-- Add tests to your integration, [`pytest-homeassistant-custom-component`](https://github.com/MatthewFlamm/pytest-homeassistant-custom-component) can help you get started.
-- Add brand images (logo/icon) to https://github.com/home-assistant/brands.
-- Create your first release.
-- Share your integration on the [Home Assistant Forum](https://community.home-assistant.io/).
-- Submit your integration to [HACS](https://hacs.xyz/docs/publish/start).
+[![Quick installation link](https://my.home-assistant.io/badges/hacs_repository.svg)][my-hacs]
+
+Migrating from StealthChesnut's HA-FSolar-Modbus? [Read this](https://github.com/comcowo/fsolar_modbus/wiki/Migrating-from-HA-FSolar-Modbus).
+
+Recommended installation is through [HACS][hacs]:
+
+1. Either [use this link][my-hacs], or navigate to HACS integration and:
+   - 'Explore & Download Repositories'
+   - Search for 'FSolar - Modbus'
+   - Download
+2. Restart Home Assistant
+3. Go to Settings > Devices and Services > Add Integration
+4. Search for and select 'FSolar - Modbus' (If the integration is not found, empty your browser cache and reload the page)
+5. Proceed with the configuration
+
+## Usage
+
+1. Navigate to Settings -> Devices & Services to find:
+
+![Usage](images/usage.png)
+
+2. Select '1 device' to find all Modbus readings:
+
+![Example](images/example.png)
+
+## Charge Periods
+
+If your inverter supports setting charge periods, you can use install the [Charge Periods lovelace card](https://github.com/comcowo/fsolar_modbus_charge_period_card):
+
+![Charge Periods](images/charge-periods.png)
+
+## Services
+
+### Write Service
+
+A service to write any modbus address is available, similar to the native Home Assistant service. To use a service, navigate to Developer Tools -> Services and select it from the drop-down.
+
+![Service](images/svc-write.png)
+
+### Update Charge Periods
+
+Updates one of the two charge periods (if supported by your inverter).
+
+![Service](images/svc-charge-1.png)
+
+### Update All Charge Periods
+
+Sets all charge periods in one service call. The service "Update Charge Period" is easier for end-users to use.
+
+![Service](images/svc-charge-2.png)
+
+---
+
+[buymecoffee]: https://www.buymeacoffee.com/comcowo
+[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
+[hacs]: https://hacs.xyz
+[my-hacs]: https://my.home-assistant.io/redirect/hacs_repository/?owner=comcowo&repository=fsolar_modbus&category=integration
+[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
+[forum]: https://community.home-assistant.io/
+[releases-shield]: https://img.shields.io/github/release/comcowo/fsolar_modbus.svg?style=for-the-badge
+[releases]: https://github.com/comcowo/fsolar_modbus/releases

@@ -1,61 +1,24 @@
-"""Binary sensor platform for fsolar_modbus."""
+"""Sensor platform for fsolar_modbus."""
 
-from __future__ import annotations
+import logging
 
-from typing import TYPE_CHECKING
+from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from homeassistant.components.binary_sensor import (
-    BinarySensorDeviceClass,
-    BinarySensorEntity,
-    BinarySensorEntityDescription,
-)
+from .common.types import HassData
+from .const import DOMAIN
+from .inverter_profiles import create_entities
 
-from .entity import IntegrationBlueprintEntity
-
-if TYPE_CHECKING:
-    from homeassistant.core import HomeAssistant
-    from homeassistant.helpers.entity_platform import AddEntitiesCallback
-
-    from .coordinator import BlueprintDataUpdateCoordinator
-    from .data import IntegrationBlueprintConfigEntry
-
-ENTITY_DESCRIPTIONS = (
-    BinarySensorEntityDescription(
-        key="fsolar_modbus",
-        name="Integration Blueprint Binary Sensor",
-        device_class=BinarySensorDeviceClass.CONNECTIVITY,
-    ),
-)
+_LOGGER = logging.getLogger(__package__)
 
 
-async def async_setup_entry(
-    hass: HomeAssistant,  # noqa: ARG001 Unused function argument: `hass`
-    entry: IntegrationBlueprintConfigEntry,
-    async_add_entities: AddEntitiesCallback,
-) -> None:
-    """Set up the binary_sensor platform."""
-    async_add_entities(
-        IntegrationBlueprintBinarySensor(
-            coordinator=entry.runtime_data.coordinator,
-            entity_description=entity_description,
-        )
-        for entity_description in ENTITY_DESCRIPTIONS
-    )
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_devices: AddEntitiesCallback) -> None:
+    """Setup sensor platform."""
 
+    hass_data: HassData = hass.data[DOMAIN]
+    controllers = hass_data[entry.entry_id]["controllers"]
 
-class IntegrationBlueprintBinarySensor(IntegrationBlueprintEntity, BinarySensorEntity):
-    """fsolar_modbus binary_sensor class."""
-
-    def __init__(
-        self,
-        coordinator: BlueprintDataUpdateCoordinator,
-        entity_description: BinarySensorEntityDescription,
-    ) -> None:
-        """Initialize the binary_sensor class."""
-        super().__init__(coordinator)
-        self.entity_description = entity_description
-
-    @property
-    def is_on(self) -> bool:
-        """Return true if the binary_sensor is on."""
-        return self.coordinator.data.get("title", "") == "foo"
+    for controller in controllers:
+        async_add_devices(create_entities(BinarySensorEntity, controller))

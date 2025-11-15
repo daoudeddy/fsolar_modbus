@@ -1,0 +1,30 @@
+categories:
+  - title: "💥 Breaking Changes"
+    label: "breaking"
+  - title: "🚀 Features"
+    label: "enhancement"
+  - title: "🔥 Removals and Deprecations"
+    label: "removal"
+  - title: "🐞 Fixes"
+    label: "bug"
+  - title: "📚 Documentation"
+    label: "documentation"
+  - title: "📦 Dependencies"
+    label: "dependencies"
+header: |
+  If your inverter is not running the latest manager version, you may need to select your manager version in the integration settings. See [the wiki](https://github.com/comcowo/fsolar_modbus/wiki/Supported-Versions) for details.
+
+  | Inverter | Supported by default | Selectable in settings |
+  |---|---|---|
+  | H1 G1 / AC1 / AIO | All | |
+  | H1 G2 | v1.44 | All |
+  | H3 | v1.80 | All |
+  | AIO-H3 | v1.01 | All |
+  | H3 Pro | v1.22 | All |
+  | H3 SMART | All | |
+  | KH / KA | v1.33 | All |
+
+template: |
+  ## Changes
+
+  $CHANGES

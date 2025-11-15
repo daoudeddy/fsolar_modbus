@@ -1,12 +1,12 @@
 {
   "domain": "fsolar_modbus",
-  "name": "Integration blueprint",
-  "codeowners": [
-    "@comcowo"
-  ],
+  "name": "FSolar - Modbus",
+  "codeowners": ["@comcowo"],
   "config_flow": true,
+  "dependencies": ["energy", "integration", "logbook"],
   "documentation": "https://github.com/comcowo/fsolar_modbus",
-  "iot_class": "cloud_polling",
+  "integration_type": "service",
+  "iot_class": "local_push",
   "issue_tracker": "https://github.com/comcowo/fsolar_modbus/issues",
-  "version": "0.1.0"
+  "version": "0.0.0"
 }

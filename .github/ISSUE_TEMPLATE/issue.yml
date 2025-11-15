@@ -1,0 +1,39 @@
+name: Bug Report
+description: If you can see an error message, or there's something clearly broken with this integration, open a bug report. If in doubt, use one of the other options.
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: FSolar - Modbus version
+      description: What version of FSolar - Modbus are you running?
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Inverter model
+      description: What inverter model are you using? E.g. H1, KH, H3
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Inverter manager version
+      description: What manager version is your inverter using? You can find this in the FSolar app, FoxCloud, or using the inverter's front panel
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: >
+        Please provide a clear and concise description of the bug. What exactly did you do, and what exactly did you see
+        which made you think that something was wrong? Please provide logs if appropriate: to enable debug logging,
+        visit [Devices & services -> FSolar - Modbus](https://my.home-assistant.io/redirect/integration/?domain=fsolar_modbus)
+        and click "Enable debug logging".
+    validations:
+      required: true

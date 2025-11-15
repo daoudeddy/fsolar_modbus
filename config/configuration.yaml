@@ -1,12 +1,9 @@
-# https://www.home-assistant.io/integrations/default_config/
 default_config:
 
-# https://www.home-assistant.io/integrations/homeassistant/
-homeassistant:
-  debug: true
-
-# https://www.home-assistant.io/integrations/logger/
 logger:
   default: info
   logs:
     custom_components.fsolar_modbus: debug
+
+# If you need to debug uncommment the line below (doc: https://www.home-assistant.io/integrations/debugpy/)
+debugpy:
