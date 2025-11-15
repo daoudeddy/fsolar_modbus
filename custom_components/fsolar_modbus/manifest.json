@@ -1,12 +1,12 @@
 {
-  "domain": "integration_blueprint",
+  "domain": "fsolar_modbus",
   "name": "Integration blueprint",
   "codeowners": [
-    "@ludeeus"
+    "@comcowo"
   ],
   "config_flow": true,
-  "documentation": "https://github.com/ludeeus/integration_blueprint",
+  "documentation": "https://github.com/comcowo/fsolar_modbus",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/ludeeus/integration_blueprint/issues",
+  "issue_tracker": "https://github.com/comcowo/fsolar_modbus/issues",
   "version": "0.1.0"
 }
