@@ -72,7 +72,9 @@ class AdapterFlowSegment:
                 vol.Required("adapter_type"): selector(
                     {
                         "select": {
-                            "options": [x.value for x in InverterAdapterType],
+                            # Felicity Solar inverters does't support InverterAdapterType.DIRECT
+                            # "options": [x.value for x in InverterAdapterType],
+                            "options": [InverterAdapterType.NETWORK, InverterAdapterType.SERIAL],
                             "translation_key": "inverter_adapter_types",
                         }
                     }

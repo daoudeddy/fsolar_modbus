@@ -11,8 +11,8 @@ body:
       required: true
   - type: input
     attributes:
-      label: FSolar - Modbus version
-      description: What version of FSolar - Modbus are you running?
+      label: Felicity Solar Inverter - Modbus version
+      description: What version of Felicity Solar Inverter - Modbus are you running?
     validations:
       required: true
   - type: input
@@ -24,7 +24,7 @@ body:
   - type: input
     attributes:
       label: Inverter manager version
-      description: What manager version is your inverter using? You can find this in the FSolar app, FoxCloud, or using the inverter's front panel
+      description: What manager version is your inverter using? You can find this in the Felicity Solar Inverter app, FoxCloud, or using the inverter's front panel
     validations:
       required: true
   - type: textarea
@@ -33,7 +33,7 @@ body:
       description: >
         Please provide a clear and concise description of the bug. What exactly did you do, and what exactly did you see
         which made you think that something was wrong? Please provide logs if appropriate: to enable debug logging,
-        visit [Devices & services -> FSolar - Modbus](https://my.home-assistant.io/redirect/integration/?domain=fsolar_modbus)
+        visit [Devices & services -> Felicity Solar Inverter - Modbus](https://my.home-assistant.io/redirect/integration/?domain=fsolar_modbus)
         and click "Enable debug logging".
     validations:
       required: true

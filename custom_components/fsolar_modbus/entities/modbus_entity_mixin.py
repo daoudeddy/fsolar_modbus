@@ -87,7 +87,7 @@ class ModbusEntityMixin(
     """
     Mixin for subclasses of Entity
 
-    This provides properties which are common to all FSolar entities.
+    This provides properties which are common to all Felicity Solar Inverter entities.
     """
 
     @cached_property
@@ -102,16 +102,16 @@ class ModbusEntityMixin(
         inv_model = self._controller.inverter_details[INVERTER_MODEL]
         conn_type = self._controller.inverter_details[INVERTER_CONN]
         if friendly_name:
-            attr_name = f"FSolar - Modbus ({friendly_name})"
+            attr_name = f"Felicity Solar Inverter - Modbus ({friendly_name})"
         else:
-            attr_name = "FSolar - Modbus"
+            attr_name = "Felicity Solar Inverter - Modbus"
 
         return DeviceInfo(
             # services/utils.py relies on the order of entries here. Update that if you update this!
             identifiers={(DOMAIN, inv_model, conn_type, friendly_name)},  # type: ignore
             name=attr_name,
             model=f"{inv_model} - {conn_type}",
-            manufacturer="FSolar",
+            manufacturer="Felicity Solar",
         )
 
     @property

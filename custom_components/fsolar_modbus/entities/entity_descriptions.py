@@ -66,6 +66,8 @@ def _version_entities() -> Iterable[EntityFactory]:
             ModbusAddressSpec(input=10016, models=Inv.H1_G1 | Inv.KH_PRE119),
             ModbusAddressSpec(holding=30016, models=Inv.H1_G1 | Inv.H1_LAN | Inv.H3_SET),
             ModbusAddressSpec(holding=36001, models=Inv.H3_PRO_PRE122),
+            ModbusAddressSpec(holding=63549, models=Inv.TREX),
+            ModbusAddressSpec(holding=35016, models=Inv.GWETP),
         ],
         is_hex=False,
     )
@@ -91,6 +93,8 @@ def _version_entities() -> Iterable[EntityFactory]:
             ModbusAddressSpec(input=10017, models=Inv.H1_G1 | Inv.KH_PRE119),
             ModbusAddressSpec(holding=30017, models=Inv.H1_G1 | Inv.H1_LAN | Inv.H3_SET),
             ModbusAddressSpec(holding=36002, models=Inv.H3_PRO_PRE122),
+            ModbusAddressSpec(holding=63550, models=Inv.TREX),
+            ModbusAddressSpec(holding=35017, models=Inv.GWETP),
         ],
         is_hex=False,
     )
@@ -115,6 +119,8 @@ def _version_entities() -> Iterable[EntityFactory]:
         address=[
             ModbusAddressSpec(input=10018, models=Inv.H1_G1 | Inv.KH_PRE119),
             ModbusAddressSpec(holding=30018, models=Inv.H1_G1 | Inv.H1_LAN),
+            ModbusAddressSpec(holding=63553, models=Inv.TREX),
+            ModbusAddressSpec(holding=35019, models=Inv.GWETP),
         ],
         is_hex=False,
     )
@@ -190,6 +196,8 @@ def _pv_entities() -> Iterable[EntityFactory]:
             ModbusAddressesSpec(input=[11000], models=Inv.H1_G1 | Inv.KH_PRE119),
             ModbusAddressesSpec(holding=[31000], models=Inv.H1_G1 | Inv.H1_LAN | Inv.KH_PRE133 | Inv.H3_SET),
             ModbusAddressesSpec(holding=[39070], models=Inv.H1_G2_SET | Inv.KH_133 | Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressesSpec(holding=[4375], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[35103], models=Inv.GWETP),
         ],
         name="PV1 Voltage",
     )

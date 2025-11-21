@@ -447,6 +447,25 @@ _INVERTER_PROFILES_LIST = [
         versions={None: Inv.H3_SMART},
         special_registers=H3_SMART_REGISTERS,
     ),
+    # Goodwe GW10K-ET
+    # These have the form 'SP R8KH3', 'R10KH3', 'R12KH3', but the number doesn't map to a power
+    # https://www.svcenergy.com/product/three-phase-solar-power-hybrid-inverter-sih
+    InverterModelProfile(
+        InverterModel.GWETP,
+        r"^GW(\d+)K-ET",
+        capacity_parser=CapacityParser(
+            capacity_map={
+                "8": 10400,
+                "10": 13000,
+                "12": 15600,
+            },
+            fallback_to_kw=False,
+        ),
+    ).add_connection_type(
+        ConnectionType.AUX,
+        RegisterType.HOLDING,
+        versions={None: Inv.GWETP},
+    ),
 ]
 
 INVERTER_PROFILES = {x.model: x for x in _INVERTER_PROFILES_LIST}

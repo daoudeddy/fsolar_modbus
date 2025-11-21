@@ -46,8 +46,8 @@ _LOGGER = logging.getLogger(__name__)
 # How many failed polls before we mark sensors as Unavailable
 _NUM_FAILED_POLLS_FOR_DISCONNECTION = 5
 
-_MODEL_START_ADDRESS = 30000
-_MODEL_LENGTH = 15
+_MODEL_START_ADDRESS = 35011
+_MODEL_LENGTH = 5
 
 _INT16_MIN = -32768
 _UINT16_MAX = 65535
@@ -414,9 +414,9 @@ class ModbusController(EntityController, UnloadController):
     def _log_message(self, message: str) -> None:
         friendly_name = self.inverter_details[FRIENDLY_NAME]
         if friendly_name:
-            name = f"FSolar - Modbus ({friendly_name})"
+            name = f"Felicity Solar Inverter - Modbus ({friendly_name})"
         else:
-            name = "FSolar - Modbus"
+            name = "Felicity Solar Inverter - Modbus"
         async_log_entry(self._hass, name=name, message=message, domain=DOMAIN)
 
     def _create_read_ranges(self, max_read: int, is_initial_connection: bool) -> Iterable[tuple[int, int]]:

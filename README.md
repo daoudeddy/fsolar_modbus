@@ -1,16 +1,16 @@
-# FSolar - Modbus
+# Felicity Solar Inverter - Modbus
 
 [![GitHub Release][releases-shield]][releases]
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 [![Community Forum][forum-shield]][forum]
 
-\*\* **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by FSolar** \*\*
+\*\* **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by Felicity Solar Inverter** \*\*
 
 ## Introduction
 
-A Home Assistant custom component which communicates with FSolar H-series inverters and derivatives without using FSolar's cloud.
+A Home Assistant custom component which communicates with Felicity Solar Inverter H-series inverters and derivatives without using Felicity Solar Inverter's cloud.
 
-This means that you're not reliant on FSolar's cloud infrastructure, so HA keeps working when the cloud goes down.
+This means that you're not reliant on Felicity Solar Inverter's cloud infrastructure, so HA keeps working when the cloud goes down.
 You can also read solar production etc in real-time, rather than once every 5 minutes.
 
 Depending on your inverter model, you can also set charge periods, work mode, min/max SoC.
@@ -18,10 +18,10 @@ See [Supported Features](https://github.com/comcowo/fsolar_modbus/wiki/Supported
 
 Supported models:
 
-- FSolar H1 (including AC1, AIO-H1 and G2)
-- FSolar H3 (including AC3 and AOI-H3)
-- FSolar H3 PRO
-- FSolar KH
+- Felicity Solar Inverter H1 (including AC1, AIO-H1 and G2)
+- Felicity Solar Inverter H3 (including AC3 and AOI-H3)
+- Felicity Solar Inverter H3 PRO
+- Felicity Solar Inverter KH
 - Kuara H3
 - Sonnenkraft SK-HWR
 - STAR
@@ -40,17 +40,17 @@ See the documentation for details.
 
 [![Quick installation link](https://my.home-assistant.io/badges/hacs_repository.svg)][my-hacs]
 
-Migrating from StealthChesnut's HA-FSolar-Modbus? [Read this](https://github.com/comcowo/fsolar_modbus/wiki/Migrating-from-HA-FSolar-Modbus).
+Migrating from StealthChesnut's HA-Felicity Solar Inverter-Modbus? [Read this](https://github.com/comcowo/fsolar_modbus/wiki/Migrating-from-HA-Felicity Solar Inverter-Modbus).
 
 Recommended installation is through [HACS][hacs]:
 
 1. Either [use this link][my-hacs], or navigate to HACS integration and:
    - 'Explore & Download Repositories'
-   - Search for 'FSolar - Modbus'
+   - Search for 'Felicity Solar Inverter - Modbus'
    - Download
 2. Restart Home Assistant
 3. Go to Settings > Devices and Services > Add Integration
-4. Search for and select 'FSolar - Modbus' (If the integration is not found, empty your browser cache and reload the page)
+4. Search for and select 'Felicity Solar Inverter - Modbus' (If the integration is not found, empty your browser cache and reload the page)
 5. Proceed with the configuration
 
 ## Usage

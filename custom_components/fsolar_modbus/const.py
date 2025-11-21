@@ -3,7 +3,6 @@
 # Base component constants
 NAME = "fsolar_modbus"
 DOMAIN = "fsolar_modbus"
-DOMAIN_DATA = f"{DOMAIN}_data"
 
 ISSUE_URL = "https://github.com/comcowo/fsolar_modbus/issues"
 
@@ -66,7 +65,7 @@ INVERTER = "inverter"
 CONNECTION = "connection"
 MODBUS = "modbus"
 
-CONFIG_ENTRY_TITLE = "FSolar - Modbus"
+CONFIG_ENTRY_TITLE = "Felicity Solar Inverter - Modbus"
 
 # Defaults
 DEFAULT_NAME = DOMAIN

@@ -1,6 +1,6 @@
 {
   "domain": "fsolar_modbus",
-  "name": "FSolar - Modbus",
+  "name": "Felicity Solar Inverter - Modbus",
   "codeowners": ["@comcowo"],
   "config_flow": true,
   "dependencies": ["energy", "integration", "logbook"],

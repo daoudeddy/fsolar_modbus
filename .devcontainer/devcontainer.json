@@ -1,6 +1,6 @@
 {
   "image": "mcr.microsoft.com/vscode/devcontainers/python:3.13-bookworm",
-  "name": "FSolar Modbus Container",
+  "name": "Felicity Solar Inverter Modbus Container",
   "appPort": ["9123:8123"],
   "postCreateCommand": ".devcontainer/setup",
   "containerEnv": {

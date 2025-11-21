@@ -1,5 +1,5 @@
 """
-Custom integration to integrate FSolar Modbus with Home Assistant.
+Custom integration to integrate Felicity Solar Inverter Modbus with Home Assistant.
 
 For more details about this integration, please refer to
 https://github.com/comcowo/fsolar_modbus

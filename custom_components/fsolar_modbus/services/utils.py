@@ -17,7 +17,7 @@ def get_controller_from_friendly_name_or_device_id(
     # HomeAssisantErrors here are shown to the user when they call a service or use the charge period card
 
     if len(controllers) == 0:
-        raise HomeAssistantError("No inverters configured in FSolar - Modbus")
+        raise HomeAssistantError("No inverters configured in Felicity Solar Inverter - Modbus")
 
     """Fetch a ModbusController from a string containing either its device ID or friendly name"""
     if device_id is None:
