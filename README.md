@@ -45,17 +45,17 @@ Recommended installation is through [HACS][hacs]:
 
 1. Navigate to Settings -> Devices & Services to find:
 
-![Usage](images/usagex.png)
+![Usage](images/usage-x.png)
 
 2. Select '1 device' to find all Modbus readings:
 
-![Example](images/example.png)
+![Example](images/example-x.png)
 
 ## Charge Periods
 
 If your inverter supports setting charge periods, you can use install the [Charge Periods lovelace card](https://github.com/comcowo/fsolar_modbus_charge_period_card):
 
-![Charge Periods](images/charge-periods.png)
+![Charge Periods](images/charge-periods-x.png)
 
 ## Services
 
@@ -63,19 +63,19 @@ If your inverter supports setting charge periods, you can use install the [Charg
 
 A service to write any modbus address is available, similar to the native Home Assistant service. To use a service, navigate to Developer Tools -> Services and select it from the drop-down.
 
-![Service](images/svc-write.png)
+![Service](images/svc-write-x.png)
 
 ### Update Charge Periods
 
 Updates one of the two charge periods (if supported by your inverter).
 
-![Service](images/svc-charge-1.png)
+![Service](images/svc-charge-1-x.png)
 
 ### Update All Charge Periods
 
 Sets all charge periods in one service call. The service "Update Charge Period" is easier for end-users to use.
 
-![Service](images/svc-charge-2.png)
+![Service](images/svc-charge-2-x.png)
 
 ---
 
