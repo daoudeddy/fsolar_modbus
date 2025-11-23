@@ -8,7 +8,7 @@
 
 ## Introduction
 
-A Home Assistant custom component which communicates with Felicity Solar T-REX and IGVM inverters and derivatives without using FSolar cloud.
+A Home Assistant custom component which communicates with Felicity Solar T-REX inverters and derivatives without using FSolar cloud.
 
 This means that you're not reliant on FSolar cloud infrastructure, so HA keeps working when the cloud goes down.
 You can also read solar production etc in every 10 seconds, rather than once every 5 minutes.
