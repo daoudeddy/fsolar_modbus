@@ -108,7 +108,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 host_parts = inverter[HOST].split(":")
                 params = {"host": host_parts[0], "port": int(host_parts[1])}
             elif inverter[MODBUS_TYPE] == SERIAL:
-                params = {"port": inverter[HOST], "baudrate": 9600}
+                params = {"port": inverter[HOST], "baudrate": 2400}
             else:
                 raise AssertionError()
             client = ModbusClient(hass, inverter[MODBUS_TYPE], adapter, params)

@@ -28,7 +28,7 @@ from .flow_handler_mixin import ValidationFailedError
 from .inverter_data import InverterData
 
 _DEFAULT_PORT = 502
-_DEFAULT_SLAVE = 247
+_DEFAULT_SLAVE = 1
 
 
 class AdapterFlowSegment:
@@ -275,7 +275,7 @@ class AdapterFlowSegment:
             if protocol in [TCP, UDP, RTU_OVER_TCP]:
                 params = {"host": host.split(":")[0], "port": int(host.split(":")[1])}
             elif protocol == SERIAL:
-                params = {"port": host, "baudrate": 9600}
+                params = {"port": host, "baudrate": 2400}
             else:
                 raise AssertionError()
             client = ModbusClient(self._flow.hass, protocol, adapter, params)
