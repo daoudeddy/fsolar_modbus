@@ -618,22 +618,22 @@ class ModbusController(EntityController, UnloadController):
                 start_address += adapter_config[MAX_READ]
 
             full_model = ""
-            powerVal = register_values[1] & 0x00FF
+            power_val = register_values[1] & 0x00FF
             # battery voltage is calculated by multiplying the 8 bit high with 12V
-            voltageVal = register_values[1] >> 8 * 12
+            voltage_val = register_values[1] >> 8 * 12
             if register_values[0] == 0x51:
                 full_model = "T-REX-"
-            if powerVal == 0x08:
+            if power_val == 0x08:
                 full_model += "5"
-            if powerVal == 0x10:
+            if power_val == 0x10:
                 full_model += "9"
-            if powerVal == 0x12:
+            if power_val == 0x12:
                 full_model += "10"
-            if powerVal == 0x62:
+            if power_val == 0x62:
                 full_model += "50"
             full_model += "K"
             # if the battery voltage is less than 100, we assume it is a low voltage system (usually 48V)
-            if voltageVal <= 100:
+            if voltage_val <= 100:
                 full_model += "L"
             else:
                 full_model += "H"
