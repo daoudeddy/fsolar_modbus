@@ -1,23 +1,16 @@
-"""Defines RegisterType"""  # noqa: A005
+"""Defines RegisterType."""  # noqa: A005
 
-from enum import Enum
-from enum import Flag
-from enum import IntEnum
-from enum import StrEnum
-from enum import auto
-from typing import TYPE_CHECKING
-from typing import Callable
-from typing import NotRequired
-from typing import TypeAlias
-from typing import TypedDict
+from collections.abc import Callable
+from enum import Enum, Flag, IntEnum, StrEnum, auto
+from typing import TYPE_CHECKING, NotRequired, TypeAlias, TypedDict
 
 if TYPE_CHECKING:
-    from ..client.modbus_client import ModbusClient
-    from ..modbus_controller import ModbusController
+    from fsolar_modbus.client.modbus_client import ModbusClient
+    from fsolar_modbus.modbus_controller import ModbusController
 
 
 class RegisterType(Enum):
-    """The different register types exposed by inverters"""
+    """The different register types exposed by inverters."""
 
     INPUT = 1
     HOLDING = 2

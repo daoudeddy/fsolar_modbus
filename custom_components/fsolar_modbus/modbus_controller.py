@@ -1,45 +1,35 @@
-"""Modbus controller"""
+"""Modbus controller."""
 
+from collections.abc import Iterable, Iterator
+from contextlib import contextmanager
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from enum import Enum
 import logging
 import re
 import threading
 import time
-from contextlib import contextmanager
-from dataclasses import dataclass
-from datetime import datetime
-from datetime import timedelta
-from enum import Enum
 from typing import Any
-from typing import Iterable
-from typing import Iterator
 
 from homeassistant.components.logbook import async_log_entry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import issue_registry
+from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.issue_registry import IssueSeverity
 
-from .client.modbus_client import ModbusClient
-from .client.modbus_client import ModbusClientFailedError
-from .common.entity_controller import EntityController
-from .common.entity_controller import EntityRemoteControlManager
-from .common.entity_controller import ModbusControllerEntity
-from .common.exceptions import AutoconnectFailedError
-from .common.exceptions import UnsupportedInverterError
-from .common.types import RegisterPollType
-from .common.types import RegisterType
+from .client.modbus_client import ModbusClient, ModbusClientFailedError
+from .common.entity_controller import (
+    EntityController,
+    EntityRemoteControlManager,
+    ModbusControllerEntity,
+)
+from .common.exceptions import AutoconnectFailedError, UnsupportedInverterError
+from .common.types import RegisterPollType, RegisterType
 from .common.unload_controller import UnloadController
-from .const import DOMAIN
-from .const import ENTITY_ID_PREFIX
-from .const import FRIENDLY_NAME
-from .const import INVERTER_MODEL
-from .const import MAX_READ
-from .inverter_profiles import INVERTER_PROFILES
-from .inverter_profiles import InverterModelConnectionTypeProfile
+from .const import DOMAIN, ENTITY_ID_PREFIX, FRIENDLY_NAME, INVERTER_MODEL, MAX_READ
+from .inverter_profiles import INVERTER_PROFILES, InverterModelConnectionTypeProfile
 from .remote_control_manager import RemoteControlManager
-from .vendor.pymodbus import ConnectionException
-from .vendor.pymodbus import ExceptionResponse
-from .vendor.pymodbus import ModbusExceptions
+from .vendor.pymodbus import ConnectionException, ExceptionResponse, ModbusExceptions
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -156,7 +146,7 @@ class ModbusController(EntityController, UnloadController):
             RemoteControlManager(self, remote_control_config, poll_rate) if remote_control_config is not None else None
         )
 
-        issue_registry.async_delete_issue(
+        ir.async_delete_issue(
             self._hass,
             domain=DOMAIN,
             issue_id=f"invalid_ranges_{self.inverter_details[ENTITY_ID_PREFIX]}",
@@ -357,7 +347,7 @@ class ModbusController(EntityController, UnloadController):
                     self._connection_state = ConnectionState.CONNECTED
                     self._current_connection_error = None
                     self._log_message("Connection restored")
-                    issue_registry.async_delete_issue(
+                    ir.async_delete_issue(
                         self._hass,
                         domain=DOMAIN,
                         issue_id=f"connection_error_{self.inverter_details[ENTITY_ID_PREFIX]}",
@@ -376,7 +366,7 @@ class ModbusController(EntityController, UnloadController):
                     self._connection_state = ConnectionState.DISCONNECTED
                     self._current_connection_error = str(exception)
                     self._log_message(f"Connection error: {exception}")
-                    issue_registry.async_create_issue(
+                    ir.async_create_issue(
                         self._hass,
                         domain=DOMAIN,
                         issue_id=f"connection_error_{self.inverter_details[ENTITY_ID_PREFIX]}",
@@ -393,7 +383,7 @@ class ModbusController(EntityController, UnloadController):
 
             if not self._detected_invalid_ranges.is_empty:
                 # This will update the issue if anything has changed, otherwise it's cheap
-                issue_registry.async_create_issue(
+                ir.async_create_issue(
                     self._hass,
                     domain=DOMAIN,
                     issue_id=f"invalid_ranges_{self.inverter_details[ENTITY_ID_PREFIX]}",

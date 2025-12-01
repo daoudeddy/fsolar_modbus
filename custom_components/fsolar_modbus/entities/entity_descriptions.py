@@ -1,41 +1,39 @@
-"""Holds all entity descriptions for all entities across all inverters"""
+"""Holds all entity descriptions for all entities across all inverters."""
 
 import itertools
 from typing import Iterable
 
-from homeassistant.components.number import NumberDeviceClass
-from homeassistant.components.number import NumberMode
-from homeassistant.components.sensor import SensorDeviceClass
-from homeassistant.components.sensor import SensorStateClass
-from homeassistant.const import UnitOfTime
-
 from custom_components.fsolar_modbus.entities.base_validator import BaseValidator
 
-from ..common.types import Inv
-from ..common.types import RegisterType
+from homeassistant.components.number import NumberDeviceClass, NumberMode
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.const import UnitOfTime
+
+from ..common.types import Inv, RegisterType
 from .charge_period_descriptions import CHARGE_PERIODS
 from .entity_factory import EntityFactory
-from .inverter_model_spec import EntitySpec
-from .inverter_model_spec import ModbusAddressesSpec
-from .inverter_model_spec import ModbusAddressSpec
+from .inverter_model_spec import EntitySpec, ModbusAddressesSpec, ModbusAddressSpec
 from .modbus_battery_sensor import ModbusBatterySensorDescription
-from .modbus_fault_sensor import H3_PRO_KH_133_FAULTS
-from .modbus_fault_sensor import STANDARD_FAULTS
-from .modbus_fault_sensor import FaultSet
-from .modbus_fault_sensor import ModbusFaultSensorDescription
+from .modbus_fault_sensor import (
+    H3_PRO_KH_133_FAULTS,
+    STANDARD_FAULTS,
+    FaultSet,
+    ModbusFaultSensorDescription,
+)
 from .modbus_integration_sensor import ModbusIntegrationSensorDescription
-from .modbus_inverter_state_sensor import H1_INVERTER_STATES
-from .modbus_inverter_state_sensor import KH_INVERTER_STATES
-from .modbus_inverter_state_sensor import ModbusG2InverterStateSensorDescription
-from .modbus_inverter_state_sensor import ModbusInverterStateSensorDescription
+from .modbus_inverter_state_sensor import (
+    H1_INVERTER_STATES,
+    KH_INVERTER_STATES,
+    ModbusG2InverterStateSensorDescription,
+    ModbusInverterStateSensorDescription,
+)
 from .modbus_lambda_sensor import ModbusLambdaSensorDescription
 from .modbus_number import ModbusNumberDescription
 from .modbus_sensor import ModbusSensorDescription
 from .modbus_version_sensor import ModbusVersionSensorDescription
 from .modbus_work_mode_select import ModbusWorkModeSelectDescription
 from .remote_control_description import REMOTE_CONTROL_DESCRIPTION
-from .validation import Min
-from .validation import Range
+from .validation import Min, Range
 
 # hass type hints are messed up, and mypy doesn't see inherited dataclass properties on the EntityDescriptions
 # mypy: disable-error-code="call-arg"
