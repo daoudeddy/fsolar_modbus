@@ -466,6 +466,13 @@ _INVERTER_PROFILES_LIST = [
         RegisterType.HOLDING,
         versions={None: Inv.GWETP},
     ),
+    # Solavita SP
+    # These have the form 'T-REX-10KLP3G01', but the number doesn't map to a power
+    InverterModelProfile(InverterModel.TREX, r"^T-REX-(\d+)K").add_connection_type(
+        ConnectionType.AUX,
+        RegisterType.HOLDING,
+        versions={None: Inv.TREX},
+    ),
 ]
 
 INVERTER_PROFILES = {x.model: x for x in _INVERTER_PROFILES_LIST}

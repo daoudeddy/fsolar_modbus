@@ -46,8 +46,8 @@ _LOGGER = logging.getLogger(__name__)
 # How many failed polls before we mark sensors as Unavailable
 _NUM_FAILED_POLLS_FOR_DISCONNECTION = 5
 
-_MODEL_START_ADDRESS = 35011
-_MODEL_LENGTH = 5
+_MODEL_START_ADDRESS = 63488
+_MODEL_LENGTH = 2
 
 _INT16_MIN = -32768
 _UINT16_MAX = 65535
@@ -604,13 +604,6 @@ class ModbusController(EntityController, UnloadController):
         try:
             pymodbus_logger.addHandler(spy_handler)
 
-            # All known inverter types expose the model number at holding register 30000 onwards.
-            # (The H1 series additionally expose some model info in input registers))
-            # Holding registers 30000-300015 seem to be all used for the model, with registers
-            # after the model containing 32 (an ascii space) or 0. Input registers 10008 onwards
-            # are for the serial number (and there doesn't seem to be enough space to hold all models!)
-            # The H3 starts the model number with a space, annoyingly.
-            # Some models (H1-5.0-E-G2 and H3-PRO) pack two ASCII chars into each register.
             register_values: list[int] = []
             start_address = _MODEL_START_ADDRESS
             while len(register_values) < _MODEL_LENGTH:
@@ -624,23 +617,28 @@ class ModbusController(EntityController, UnloadController):
                 )
                 start_address += adapter_config[MAX_READ]
 
-            # If they've packed 2 ASCII chars into each register, unpack them
-            if (register_values[0] & 0xFF00) != 0:
-                model_chars = []
-                # High byte, then low byte
-                for register in register_values:
-                    model_chars.append((register >> 8) & 0xFF)
-                    model_chars.append(register & 0xFF)
-            else:
-                model_chars = register_values
-
-            # Stop as soon as we find something non-printable-ASCII
             full_model = ""
-            for char in model_chars:
-                if 0x20 <= char < 0x7F:
-                    full_model += chr(char)
-                else:
-                    break
+            if (register_values[0] & 0xFF00) != 0x51:
+                full_model = "T-REX-"
+            if (register_values[1] & 0x00FF) != 0x08:
+                full_model += "5"
+            if (register_values[1] & 0x00FF) != 0x10:
+                full_model += "9"
+            if (register_values[1] & 0x00FF) != 0x12:
+                full_model += "10"
+            if (register_values[1] & 0x00FF) != 0x62:
+                full_model += "50"
+            if (register_values[1] & 0xFF00) != 0x04:
+                full_model += "L"
+            full_model += "K"
+            if (register_values[1] & 0xFF00) <= 0x10:
+                full_model += "L"
+            else:
+                full_model += "H"
+            # Currently only 3phase is supported
+            full_model += "P3G01"
+
+
             # Take off tailing spaces and H3's leading space
             full_model = full_model.strip()
             for model in INVERTER_PROFILES.values():
