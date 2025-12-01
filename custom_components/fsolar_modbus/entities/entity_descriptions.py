@@ -241,7 +241,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
                 models=Inv.ALL,
             ),
         ],
-        name="PV1 Power Total",
+        name="PV1 Energy Total",
         source_entity="pv1_power",
     )
     yield _pv_voltage(
@@ -293,7 +293,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
                 models=Inv.ALL,
             ),
         ],
-        name="PV2 Power Total",
+        name="PV2 Energy Total",
         source_entity="pv2_power",
     )
     yield _pv_voltage(
@@ -302,7 +302,6 @@ def _pv_entities() -> Iterable[EntityFactory]:
             ModbusAddressesSpec(input=[11096], models=Inv.KH_PRE119),
             ModbusAddressesSpec(holding=[31039], models=Inv.KH_PRE133),
             ModbusAddressesSpec(holding=[39074], models=Inv.KH_133 | Inv.H3_PRO_SET | Inv.H3_SMART),
-            ModbusAddressesSpec(holding=[4381], models=Inv.TREX),
         ],
         name="PV3 Voltage",
     )
@@ -311,7 +310,6 @@ def _pv_entities() -> Iterable[EntityFactory]:
         addresses=[
             ModbusAddressesSpec(input=[11097], models=Inv.KH_PRE119),
             ModbusAddressesSpec(holding=[31040], models=Inv.KH_PRE133),
-            ModbusAddressesSpec(holding=[4382], models=Inv.TREX),
         ],
         name="PV3 Current",
         scale=0.1,
@@ -331,7 +329,6 @@ def _pv_entities() -> Iterable[EntityFactory]:
             ModbusAddressesSpec(holding=[31041], models=Inv.KH_PRE133),
             ModbusAddressesSpec(holding=[39284, 39283], models=Inv.KH_133),
             ModbusAddressesSpec(holding=[39284, 39283], models=Inv.H3_PRO_SET | Inv.H3_SMART),
-            ModbusAddressesSpec(holding=[4383], models=Inv.TREX),
         ],
         name="PV3 Power",
     )
@@ -343,7 +340,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
                 models=Inv.KH_SET | Inv.H3_PRO_SET | Inv.H3_SMART,
             ),
         ],
-        name="PV3 Power Total",
+        name="PV3 Energy Total",
         source_entity="pv3_power",
     )
     yield _pv_voltage(
@@ -389,7 +386,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
                 models=Inv.KH_SET | Inv.H3_PRO_SET | Inv.H3_SMART,
             ),
         ],
-        name="PV4 Power Total",
+        name="PV4 Energy Total",
         source_entity="pv4_power",
     )
     yield _pv_voltage(
@@ -422,7 +419,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
                 models=Inv.H3_PRO_SET,
             ),
         ],
-        name="PV5 Power Total",
+        name="PV5 Energy Total",
         source_entity="pv5_power",
     )
     yield _pv_voltage(
@@ -455,7 +452,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
                 models=Inv.H3_PRO_SET,
             ),
         ],
-        name="PV6 Power Total",
+        name="PV6 Energy Total",
         source_entity="pv6_power",
     )
     yield ModbusLambdaSensorDescription(

@@ -733,7 +733,7 @@
   {
     "key": "pv1_energy_total",
     "method": "left",
-    "name": "PV1 Power Total",
+    "name": "PV1 Energy Total",
     "source": "pv1_power",
     "type": "integration-sensor",
     "unit_time": "h"
@@ -771,7 +771,7 @@
   {
     "key": "pv2_energy_total",
     "method": "left",
-    "name": "PV2 Power Total",
+    "name": "PV2 Energy Total",
     "source": "pv2_power",
     "type": "integration-sensor",
     "unit_time": "h"
