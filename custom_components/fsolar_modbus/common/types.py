@@ -1,4 +1,4 @@
-"""Defines RegisterType"""  # noqa: A005
+"""Defines RegisterType"""
 
 from enum import Enum
 from enum import Flag
@@ -92,7 +92,7 @@ class Inv(Flag):
     H3_PRO_SET = H3_PRO_PRE122 | H3_PRO_122
 
     H3_SMART = auto()
-    
+
     TREX = auto()
     GWETP = auto()
 
