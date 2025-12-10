@@ -1,14 +1,16 @@
 """Modbus controller."""
 
-from collections.abc import Iterable, Iterator
-from contextlib import contextmanager
-from dataclasses import dataclass
-from datetime import datetime, timedelta
-from enum import Enum
 import logging
 import re
 import threading
 import time
+from collections.abc import Iterable
+from collections.abc import Iterator
+from contextlib import contextmanager
+from dataclasses import dataclass
+from datetime import datetime
+from datetime import timedelta
+from enum import Enum
 from typing import Any
 
 from homeassistant.components.logbook import async_log_entry
@@ -17,19 +19,27 @@ from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.issue_registry import IssueSeverity
 
-from .client.modbus_client import ModbusClient, ModbusClientFailedError
-from .common.entity_controller import (
-    EntityController,
-    EntityRemoteControlManager,
-    ModbusControllerEntity,
-)
-from .common.exceptions import AutoconnectFailedError, UnsupportedInverterError
-from .common.types import RegisterPollType, RegisterType
+from .client.modbus_client import ModbusClient
+from .client.modbus_client import ModbusClientFailedError
+from .common.entity_controller import EntityController
+from .common.entity_controller import EntityRemoteControlManager
+from .common.entity_controller import ModbusControllerEntity
+from .common.exceptions import AutoconnectFailedError
+from .common.exceptions import UnsupportedInverterError
+from .common.types import RegisterPollType
+from .common.types import RegisterType
 from .common.unload_controller import UnloadController
-from .const import DOMAIN, ENTITY_ID_PREFIX, FRIENDLY_NAME, INVERTER_MODEL, MAX_READ
-from .inverter_profiles import INVERTER_PROFILES, InverterModelConnectionTypeProfile
+from .const import DOMAIN
+from .const import ENTITY_ID_PREFIX
+from .const import FRIENDLY_NAME
+from .const import INVERTER_MODEL
+from .const import MAX_READ
+from .inverter_profiles import INVERTER_PROFILES
+from .inverter_profiles import InverterModelConnectionTypeProfile
 from .remote_control_manager import RemoteControlManager
-from .vendor.pymodbus import ConnectionException, ExceptionResponse, ModbusExceptions
+from .vendor.pymodbus import ConnectionException
+from .vendor.pymodbus import ExceptionResponse
+from .vendor.pymodbus import ModbusExceptions
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -629,7 +639,6 @@ class ModbusController(EntityController, UnloadController):
                 full_model += "H"
             # Currently only 3phase is supported
             full_model += "P3G01"
-
 
             # Take off tailing spaces and H3's leading space
             full_model = full_model.strip()
