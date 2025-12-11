@@ -1,0 +1,11 @@
+[
+  {
+    "addresses": [
+      4375
+    ],
+    "key": "pv1_voltage",
+    "name": "PV1 Voltage",
+    "signed": true,
+    "type": "sensor"
+  }
+]
