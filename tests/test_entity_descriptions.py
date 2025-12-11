@@ -13,8 +13,8 @@ from syrupy.assertion import SnapshotAssertion
 from syrupy.extensions.json import JSONSnapshotExtension
 
 from custom_components.fsolar_modbus.common.entity_controller import ModbusControllerEntity
-from custom_components.fsolar_modbus.common.types import ConnectionType
-from custom_components.fsolar_modbus.common.types import InverterModel
+from custom_components.fsolar_modbus.common.register_types import ConnectionType
+from custom_components.fsolar_modbus.common.register_types import InverterModel
 from custom_components.fsolar_modbus.const import ENTITY_ID_PREFIX
 from custom_components.fsolar_modbus.const import INVERTER_BASE
 from custom_components.fsolar_modbus.const import INVERTER_CONN
