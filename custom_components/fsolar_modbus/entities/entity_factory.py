@@ -9,8 +9,8 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.util.frozen_dataclass_compat import FrozenOrThawed
 
 from ..common.entity_controller import EntityController
-from ..common.types import Inv
-from ..common.types import RegisterType
+from ..common.register_types import Inv
+from ..common.register_types import RegisterType
 from .inverter_model_spec import InverterModelSpec
 
 

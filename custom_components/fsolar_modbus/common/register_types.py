@@ -1,15 +1,8 @@
 """Defines RegisterType."""
 
 from collections.abc import Callable
-from enum import Enum
-from enum import Flag
-from enum import IntEnum
-from enum import StrEnum
-from enum import auto
-from typing import TYPE_CHECKING
-from typing import NotRequired
-from typing import TypeAlias
-from typing import TypedDict
+from enum import Enum, Flag, IntEnum, StrEnum, auto
+from typing import TYPE_CHECKING, NotRequired, TypeAlias, TypedDict
 
 if TYPE_CHECKING:
     from fsolar_modbus.client.modbus_client import ModbusClient

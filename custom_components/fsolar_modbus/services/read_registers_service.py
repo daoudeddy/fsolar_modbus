@@ -8,7 +8,7 @@ from homeassistant.core import ServiceResponse
 from homeassistant.core import SupportsResponse
 from homeassistant.helpers import config_validation as cv
 
-from ..common.types import RegisterType
+from ..common.register_types import RegisterType
 from ..const import DOMAIN
 from ..modbus_controller import ModbusController
 from .utils import get_controller_from_friendly_name_or_device_id

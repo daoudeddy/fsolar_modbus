@@ -7,7 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .common.types import HassData
+from .common.register_types import HassData
 from .const import DOMAIN
 from .entities.connection_status_sensor import ConnectionStatusSensor
 from .inverter_profiles import create_entities

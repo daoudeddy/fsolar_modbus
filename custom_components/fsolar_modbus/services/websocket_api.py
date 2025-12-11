@@ -6,7 +6,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.core import callback
 from homeassistant.helpers import config_validation as cv
 
-from ..common.types import HassData
+from ..common.register_types import HassData
 from ..const import DOMAIN
 from ..const import FRIENDLY_NAME
 from .utils import get_controller_from_friendly_name_or_device_id

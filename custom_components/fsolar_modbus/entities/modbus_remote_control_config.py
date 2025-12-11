@@ -8,8 +8,8 @@ from homeassistant.components.number import NumberMode
 
 from ..common.entity_controller import EntityController
 from ..common.entity_controller import EntityRemoteControlManager
-from ..common.types import Inv
-from ..common.types import RegisterType
+from ..common.register_types import Inv
+from ..common.register_types import RegisterType
 from .entity_factory import EntityFactory
 from .inverter_model_spec import EntitySpec
 from .inverter_model_spec import InverterModelSpec

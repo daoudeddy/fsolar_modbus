@@ -11,10 +11,10 @@ from typing import Self
 from homeassistant.helpers.entity import Entity
 
 from .common.entity_controller import EntityController
-from .common.types import ConnectionType
-from .common.types import Inv
-from .common.types import InverterModel
-from .common.types import RegisterType
+from .common.register_types import ConnectionType
+from .common.register_types import Inv
+from .common.register_types import InverterModel
+from .common.register_types import RegisterType
 from .const import INVERTER_BASE
 from .const import INVERTER_CONN
 from .const import INVERTER_VERSION

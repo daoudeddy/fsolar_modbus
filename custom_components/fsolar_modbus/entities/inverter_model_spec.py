@@ -3,8 +3,8 @@
 from abc import ABC
 from abc import abstractmethod
 
-from ..common.types import Inv
-from ..common.types import RegisterType
+from ..common.register_types import Inv
+from ..common.register_types import RegisterType
 
 
 class InverterModelSpec(ABC):

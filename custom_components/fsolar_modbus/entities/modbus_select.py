@@ -12,8 +12,8 @@ from homeassistant.const import Platform
 from homeassistant.helpers.entity import Entity
 
 from ..common.entity_controller import EntityController
-from ..common.types import Inv
-from ..common.types import RegisterType
+from ..common.register_types import Inv
+from ..common.register_types import RegisterType
 from .base_validator import BaseValidator
 from .entity_factory import ENTITY_DESCRIPTION_KWARGS
 from .entity_factory import EntityFactory

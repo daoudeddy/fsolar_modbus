@@ -8,7 +8,7 @@ from typing import Any
 
 from homeassistant.core import HomeAssistant
 
-from .types import RegisterPollType
+from .register_types import RegisterPollType
 
 _LOGGER = logging.getLogger(__name__)
 

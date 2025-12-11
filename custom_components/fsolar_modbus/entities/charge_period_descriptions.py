@@ -2,7 +2,7 @@
 
 import logging
 
-from ..common.types import Inv
+from ..common.register_types import Inv
 from .modbus_charge_period_config import ChargePeriodAddressSpec
 from .modbus_charge_period_config import ModbusChargePeriodAddressConfig
 from .modbus_charge_period_config import ModbusChargePeriodFactory

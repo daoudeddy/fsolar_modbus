@@ -18,8 +18,8 @@ from homeassistant.helpers.typing import UNDEFINED
 from slugify import slugify
 
 from .client.modbus_client import ModbusClient
-from .common.types import HassData
-from .common.types import HassDataEntry
+from .common.register_types import HassData
+from .common.register_types import HassDataEntry
 from .const import ADAPTER_ID
 from .const import ADAPTER_WAS_MIGRATED
 from .const import CONFIG_SAVE_TIME

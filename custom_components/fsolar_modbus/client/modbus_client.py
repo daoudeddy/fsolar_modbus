@@ -13,8 +13,8 @@ import serial
 from homeassistant.core import HomeAssistant
 
 from .. import client
-from ..common.types import ConnectionType
-from ..common.types import RegisterType
+from ..common.register_types import ConnectionType
+from ..common.register_types import RegisterType
 from ..const import RTU_OVER_TCP
 from ..const import SERIAL
 from ..const import TCP

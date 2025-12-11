@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from .common.types import ConnectionType
+from .common.register_types import ConnectionType
 from .const import MAX_READ
 from .const import POLL_RATE
 from .const import RTU_OVER_TCP

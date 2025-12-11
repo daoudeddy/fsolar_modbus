@@ -11,8 +11,8 @@ from homeassistant.const import UnitOfTime
 
 from custom_components.fsolar_modbus.entities.base_validator import BaseValidator
 
-from ..common.types import Inv
-from ..common.types import RegisterType
+from ..common.register_types import Inv
+from ..common.register_types import RegisterType
 from .charge_period_descriptions import CHARGE_PERIODS
 from .entity_factory import EntityFactory
 from .inverter_model_spec import EntitySpec

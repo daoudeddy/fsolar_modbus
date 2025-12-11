@@ -12,7 +12,7 @@ from ..client.modbus_client import ModbusClient
 from ..client.modbus_client import ModbusClientFailedError
 from ..common.exceptions import AutoconnectFailedError
 from ..common.exceptions import UnsupportedInverterError
-from ..common.types import ConnectionType
+from ..common.register_types import ConnectionType
 from ..const import RTU_OVER_TCP
 from ..const import SERIAL
 from ..const import TCP

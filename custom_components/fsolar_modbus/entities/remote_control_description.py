@@ -1,4 +1,4 @@
-from ..common.types import Inv
+from ..common.register_types import Inv
 from .modbus_remote_control_config import ModbusRemoteControlAddressConfig
 from .modbus_remote_control_config import ModbusRemoteControlFactory
 from .modbus_remote_control_config import RemoteControlAddressSpec
