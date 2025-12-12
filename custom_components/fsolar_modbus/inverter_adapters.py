@@ -13,7 +13,6 @@ from .const import RTU_OVER_TCP
 from .const import TCP
 from .const import UDP
 
-
 class InverterAdapterType(str, Enum):
     """Describes the different means of connecting to an inverter"""
 

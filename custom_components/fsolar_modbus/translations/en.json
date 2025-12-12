@@ -32,7 +32,8 @@
         "description": "Set up your adapter by following the instructions at {setup_link}.",
         "data": {
           "serial_device": "USB serial device",
-          "modbus_slave": "Inverter slave ID"
+          "modbus_slave": "Inverter slave ID",
+          "modbus_serial_baud": "Inverter baudrate"
         },
         "data_description": {
           "modbus_slave": "This can be set from Settings -> Communication in the inverter menu"
@@ -130,7 +131,8 @@
         "description": "Set up your adapter by following the instructions at {setup_link}.",
         "data": {
           "serial_device": "USB serial device",
-          "modbus_slave": "Inverter slave ID"
+          "modbus_slave": "Inverter slave ID",
+          "modbus_serial_baud": "Inverter baudrate"
         },
         "data_description": {
           "modbus_slave": "This can be set from Settings -> Communication in the inverter menu"

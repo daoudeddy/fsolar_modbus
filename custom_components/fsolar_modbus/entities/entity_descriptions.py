@@ -229,6 +229,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
             # which means that negative values are represented incorrectly (as 0x0000FFFF etc)
             ModbusAddressesSpec(holding=[39280], models=Inv.H1_G2_SET),
             ModbusAddressesSpec(holding=[39280, 39279], models=Inv.KH_133 | Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressesSpec(holding=[35105], models=Inv.GWETP),
             ModbusAddressesSpec(holding=[4377], models=Inv.TREX),
         ],
         name="PV1 Power",

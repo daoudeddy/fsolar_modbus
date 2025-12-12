@@ -31,6 +31,7 @@ from .const import INVERTER_CONN
 from .const import INVERTERS
 from .const import MAX_READ
 from .const import MODBUS_SLAVE
+from .const import MODBUS_SERIAL_BAUD
 from .const import MODBUS_TYPE
 from .const import PLATFORMS
 from .const import POLL_RATE
@@ -75,6 +76,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             inverter_connection_type_profile_from_config(inverter),
             inverter,
             inverter[MODBUS_SLAVE],
+            inverter[MODBUS_SERIAL_BAUD],
             inverter[POLL_RATE],
             inverter[MAX_READ],
         )
@@ -108,7 +110,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 host_parts = inverter[HOST].split(":")
                 params = {"host": host_parts[0], "port": int(host_parts[1])}
             elif inverter[MODBUS_TYPE] == SERIAL:
-                params = {"port": inverter[HOST], "baudrate": 2400}
+                params = {"port": inverter[HOST], "baudrate": inverter[MODBUS_SERIAL_BAUD]}
             else:
                 raise AssertionError()
             client = ModbusClient(hass, inverter[MODBUS_TYPE], adapter, params)

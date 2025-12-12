@@ -28,7 +28,10 @@ from .flow_handler_mixin import ValidationFailedError
 from .inverter_data import InverterData
 
 _DEFAULT_PORT = 502
-_DEFAULT_SLAVE = 1
+#_DEFAULT_SLAVE = 1
+#_DEFAULT_BAUD = 2400
+_DEFAULT_SLAVE = 247
+_DEFAULT_BAUDRATE = 9600
 
 
 class AdapterFlowSegment:
@@ -220,7 +223,8 @@ class AdapterFlowSegment:
             assert adapter is not None
             device = user_input["serial_device"]
             slave = user_input.get("modbus_slave", _DEFAULT_SLAVE)
-            await self._autodetect_modbus_and_save_to_inverter_data(SERIAL, device, slave, adapter)
+            baudrate = user_input.get("modbus_serial_baud", _DEFAULT_BAUDRATE)
+            await self._autodetect_modbus_and_save_to_inverter_data(SERIAL, device, slave, baudrate, adapter)
             return await self._on_complete()
 
         assert adapter is not None
@@ -232,6 +236,7 @@ class AdapterFlowSegment:
                     default=adapter.default_host,
                 ): cv.string,
                 vol.Required("modbus_slave", default=_DEFAULT_SLAVE): int,
+                vol.Required("modbus_serial_baud", default=_DEFAULT_BAUDRATE): int,
             }
         )
 
@@ -243,6 +248,8 @@ class AdapterFlowSegment:
             suggested_values["serial_device"] = self.inverter_data.host
         if self.inverter_data.modbus_slave is not None:
             suggested_values["modbus_slave"] = self.inverter_data.modbus_slave
+        if self.inverter_data.modbus_serial_baud is not None:
+            suggested_values["modbus_serial_baud"] = self.inverter_data.modbus_serial_baud
         return await self._flow.with_default_form(
             body,
             user_input,
@@ -257,6 +264,7 @@ class AdapterFlowSegment:
         protocol: str,
         host: str,
         slave: int,
+        baudrate: int,
         adapter: InverterAdapter,
     ) -> None:
         """
@@ -275,7 +283,7 @@ class AdapterFlowSegment:
             if protocol in [TCP, UDP, RTU_OVER_TCP]:
                 params = {"host": host.split(":")[0], "port": int(host.split(":")[1])}
             elif protocol == SERIAL:
-                params = {"port": host, "baudrate": 2400}
+                params = {"port": host, "baudrate": baudrate}
             else:
                 raise AssertionError()
             client = ModbusClient(self._flow.hass, protocol, adapter, params)
@@ -287,6 +295,7 @@ class AdapterFlowSegment:
             self.inverter_data.inverter_model = full_model
             self.inverter_data.inverter_protocol = protocol
             self.inverter_data.modbus_slave = slave
+            self.inverter_data.modbus_serial_baud = baudrate
             self.inverter_data.host = host
         except UnsupportedInverterError as ex:
             raise ValidationFailedError(
