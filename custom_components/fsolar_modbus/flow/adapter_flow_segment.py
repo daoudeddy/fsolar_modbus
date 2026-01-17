@@ -28,10 +28,10 @@ from .flow_handler_mixin import ValidationFailedError
 from .inverter_data import InverterData
 
 _DEFAULT_PORT = 502
-#_DEFAULT_SLAVE = 1
-#_DEFAULT_BAUD = 2400
-_DEFAULT_SLAVE = 247
-_DEFAULT_BAUDRATE = 9600
+_DEFAULT_SLAVE = 1
+_DEFAULT_BAUD = 2400
+#_DEFAULT_SLAVE = 247
+#_DEFAULT_BAUDRATE = 9600
 
 
 class AdapterFlowSegment:
