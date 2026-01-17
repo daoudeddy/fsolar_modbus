@@ -1405,7 +1405,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
         yield ModbusSensorDescription(
             key=f"invbatpower{key_suffix}",
             addresses=addresses,
-            name=f"Inverter Battery{name_infix} Power",
+            name=f"Battery{name_infix} Power",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
             native_unit_of_measurement="kW",
@@ -1443,12 +1443,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
     yield from _invbatpower(
         index=None,
         addresses=[
-            ModbusAddressesSpec(input=[11008], models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressesSpec(
-                holding=[31022], models=Inv.H1_G1 | Inv.H1_LAN | Inv.H1_G2_SET | Inv.KH_PRE133 | Inv.KH_133
-            ),
-            ModbusAddressesSpec(holding=[31036], models=Inv.H3_SET),
-            ModbusAddressesSpec(holding=[39238, 39237], models=Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressesSpec(holding=[4367], models=Inv.TREX),
         ],
     )
     yield from _invbatpower(
@@ -2405,21 +2400,13 @@ def _bms_entities() -> Iterable[EntityFactory]:
         index=None,
         bms_connect_state_address=BMS_CONNECT_STATE_ADDRESS,
         batvolt=[
-            ModbusAddressesSpec(input=[11034], models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressesSpec(holding=[37609], models=Inv.H1_G2_144),
-            ModbusAddressesSpec(holding=[31034], models=Inv.H3_SET),
+            ModbusAddressesSpec(holding=[4365], models=Inv.TREX),
         ],
         bat_current=[
-            ModbusAddressesSpec(input=[11035], models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressesSpec(holding=[37610], models=Inv.H1_G2_144),
-            ModbusAddressesSpec(holding=[31035], models=Inv.H3_SET),
+            ModbusAddressesSpec(holding=[4366], models=Inv.TREX),
         ],
         battery_soc=[
-            ModbusAddressesSpec(input=[11036], models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressesSpec(
-                holding=[31024], models=Inv.H1_G1 | Inv.H1_LAN | Inv.H1_G2_SET | Inv.KH_PRE133 | Inv.KH_133
-            ),
-            ModbusAddressesSpec(holding=[31038], models=Inv.H3_SET),
+            ModbusAddressesSpec(holding=[4368], models=Inv.TREX),
         ],
         battery_soh=[
             # Temporarily removed, see #756
