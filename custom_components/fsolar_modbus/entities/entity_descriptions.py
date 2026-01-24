@@ -196,17 +196,6 @@ def _pv_entities() -> Iterable[EntityFactory]:
         ],
         name="PV1 Power",
     )
-    yield _pv_energy_total(
-        key="pv1_energy_total",
-        models=[
-            EntitySpec(
-                register_types=[RegisterType.INPUT, RegisterType.HOLDING],
-                models=Inv.ALL,
-            ),
-        ],
-        name="PV1 Energy Total",
-        source_entity="pv1_power",
-    )
     yield _pv_voltage(
         key="pv2_voltage",
         addresses=[
@@ -244,17 +233,6 @@ def _pv_entities() -> Iterable[EntityFactory]:
             ModbusAddressesSpec(holding=[4380], models=Inv.TREX),
         ],
         name="PV2 Power",
-    )
-    yield _pv_energy_total(
-        key="pv2_energy_total",
-        models=[
-            EntitySpec(
-                register_types=[RegisterType.INPUT, RegisterType.HOLDING],
-                models=Inv.ALL,
-            ),
-        ],
-        name="PV2 Energy Total",
-        source_entity="pv2_power",
     )
     yield ModbusLambdaSensorDescription(
         key="pv_power_now",
