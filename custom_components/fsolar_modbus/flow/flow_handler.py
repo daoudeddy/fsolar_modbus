@@ -269,7 +269,7 @@ class FlowHandler(FlowHandlerMixin, config_entries.ConfigFlow, domain=DOMAIN):
             name_prefix = _prefix_name(entity_id_prefix)
             grid_source["flow_from"].append(
                 FlowFromGridSourceType(
-                    stat_energy_from=f"{name_prefix}grid_consumption_energy_total",
+                    stat_energy_from=f"{name_prefix}grid_import_energy_total",
                     stat_cost=None,
                     entity_energy_price=None,
                     number_energy_price=None,
@@ -277,7 +277,7 @@ class FlowHandler(FlowHandlerMixin, config_entries.ConfigFlow, domain=DOMAIN):
             )
             grid_source["flow_to"].append(
                 FlowToGridSourceType(
-                    stat_energy_to=f"{name_prefix}feed_in_energy_total",
+                    stat_energy_to=f"{name_prefix}grid_export_energy_total",
                     stat_compensation=None,
                     entity_energy_price=None,
                     number_energy_price=None,

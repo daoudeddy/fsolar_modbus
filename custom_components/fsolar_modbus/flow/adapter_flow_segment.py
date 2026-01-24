@@ -28,8 +28,10 @@ from .flow_handler_mixin import ValidationFailedError
 from .inverter_data import InverterData
 
 _DEFAULT_PORT = 502
+# Felicity
 _DEFAULT_SLAVE = 1
 _DEFAULT_BAUDRATE = 2400
+# GoodWe
 #_DEFAULT_SLAVE = 247
 #_DEFAULT_BAUDRATE = 9600
 
