@@ -1025,7 +1025,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
         )
     yield _load_energy_total(
         addresses=[
-            ModbusAddressesSpec(holding=[4451, 4450, 4449, 4448], models=Inv.H3_SMART | Inv.H3_PRO_SET & ~Inv.H3_PRO_PRE122),
+            ModbusAddressesSpec(holding=[4451, 4450, 4449, 4448], models=Inv.TREX),
         ],
         scale=0.001,
     )
@@ -1375,7 +1375,7 @@ def _configuration_entities() -> Iterable[EntityFactory]:
         ],
         name="Battery Min SoC (Off Grid)",
         mode=NumberMode.BOX,
-        native_min_value=10,
+        native_min_value=0,
         native_max_value=100,
         native_step=1,
         native_unit_of_measurement="%",
