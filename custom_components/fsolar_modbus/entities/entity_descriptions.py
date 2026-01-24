@@ -870,6 +870,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:solar-power",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -890,6 +891,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:battery-arrow-up-outline",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -910,6 +912,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:battery-arrow-down-outline",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -930,6 +933,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:transmission-tower-import",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -950,6 +954,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:transmission-tower-export",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -970,6 +975,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:export",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -1000,6 +1006,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:import",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -1020,6 +1027,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="kWh",
             icon="mdi:home-lightning-bolt-outline",
             scale=scale,
+            round_to=1,
             signed=False,
             validate=[Min(0)],
         )
@@ -1080,7 +1088,7 @@ def _bms_entities() -> Iterable[EntityFactory]:
             native_unit_of_measurement="%",
             signed=False,
             scale=0.1,
-            round_to=0,
+            round_to=1,
             validate=[Range(0, 100)],
         )
         yield ModbusBatterySensorDescription(
