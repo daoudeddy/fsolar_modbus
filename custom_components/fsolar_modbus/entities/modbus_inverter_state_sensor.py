@@ -19,23 +19,14 @@ from .inverter_model_spec import ModbusAddressesSpec
 from .inverter_model_spec import ModbusAddressSpec
 from .modbus_entity_mixin import ModbusEntityMixin
 
-H1_INVERTER_STATES = [
-    "Waiting",
-    "Checking",
-    "On Grid",
-    "Off Grid / EPS",
-    "Recoverable Fault",
-    "Unrecoverable Fault",
-]
-
-KH_INVERTER_STATES = [
-    "Self Test",
-    "Waiting",
-    "Checking",
-    "On Grid",
-    "Off Grid / EPS",
-    "Recoverable Fault",
-    "Unrecoverable Fault",
+TREX_INVERTER_STATES = [
+    "PowerOnMode",
+    "StandbyMode",
+    "BypassMode",
+    "Off-grid Mode",
+    "FaultMode",
+    "LineMode",
+    "PVChargeMode",
 ]
 
 

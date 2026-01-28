@@ -43,7 +43,7 @@ class ModbusRemoteControlAddressConfig:
     """Current battery SoC. If multiple values, these are the socs of the different batteries"""
     max_soc: int | None
     """Configured Max SoC"""
-    invbatpower: list[int]
+    battery_power: list[int]
     """Current battery charge (negative) / discharge (positive) power"""
     pwr_limit_bat_up: list[int] | None
     """Prw_limit Bat_up, maximum power that the battery can accept"""

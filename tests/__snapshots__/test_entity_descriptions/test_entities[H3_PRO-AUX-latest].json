@@ -3,7 +3,7 @@
     "addresses": [
       37610
     ],
-    "key": "bat_current_1",
+    "key": "battery_current_1",
     "name": "Battery 1 Current",
     "scale": 0.1,
     "signed": true,
@@ -13,7 +13,7 @@
     "addresses": [
       38308
     ],
-    "key": "bat_current_2",
+    "key": "battery_current_2",
     "name": "Battery 2 Current",
     "scale": 0.1,
     "signed": true,
@@ -24,7 +24,7 @@
       39238,
       39237
     ],
-    "key": "battery_charge",
+    "key": "battery_power_charge",
     "name": "Battery Charge",
     "scale": 0.001,
     "signed": true,
@@ -35,7 +35,7 @@
       39231,
       39230
     ],
-    "key": "battery_charge_1",
+    "key": "battery_power_charge_1",
     "name": "Battery 1 Charge",
     "scale": 0.001,
     "signed": true,
@@ -46,7 +46,7 @@
       39236,
       39235
     ],
-    "key": "battery_charge_2",
+    "key": "battery_power_charge_2",
     "name": "Battery 2 Charge",
     "scale": 0.001,
     "signed": true,
@@ -57,7 +57,7 @@
       39608,
       39607
     ],
-    "key": "battery_charge_today",
+    "key": "battery_power_charge_today",
     "name": "Battery Charge Today",
     "scale": 0.01,
     "signed": true,
@@ -68,7 +68,7 @@
       39606,
       39605
     ],
-    "key": "battery_charge_total",
+    "key": "battery_energy_charge_total",
     "name": "Battery Charge Total",
     "scale": 0.01,
     "signed": false,
@@ -79,7 +79,7 @@
       39238,
       39237
     ],
-    "key": "battery_discharge",
+    "key": "battery_power_discharge",
     "name": "Battery Discharge",
     "scale": 0.001,
     "signed": true,
@@ -90,7 +90,7 @@
       39231,
       39230
     ],
-    "key": "battery_discharge_1",
+    "key": "battery_power_discharge_1",
     "name": "Battery 1 Discharge",
     "scale": 0.001,
     "signed": true,
@@ -101,7 +101,7 @@
       39236,
       39235
     ],
-    "key": "battery_discharge_2",
+    "key": "battery_power_discharge_2",
     "name": "Battery 2 Discharge",
     "scale": 0.001,
     "signed": true,
@@ -112,7 +112,7 @@
       39612,
       39611
     ],
-    "key": "battery_discharge_today",
+    "key": "battery_power_discharge_today",
     "name": "Battery Discharge Today",
     "scale": 0.01,
     "signed": true,
@@ -123,7 +123,7 @@
       39610,
       39609
     ],
-    "key": "battery_discharge_total",
+    "key": "battery_energy_discharge_total",
     "name": "Battery Discharge Total",
     "scale": 0.01,
     "signed": false,
@@ -173,7 +173,7 @@
     "addresses": [
       37609
     ],
-    "key": "batvolt_1",
+    "key": "battery_voltage_1",
     "name": "Battery 1 Voltage",
     "scale": 0.1,
     "signed": true,
@@ -183,7 +183,7 @@
     "addresses": [
       38307
     ],
-    "key": "batvolt_2",
+    "key": "battery_voltage_2",
     "name": "Battery 2 Voltage",
     "scale": 0.1,
     "signed": true,
@@ -338,7 +338,7 @@
       39213,
       39212
     ],
-    "key": "eps_power_R",
+    "key": "backup_power_R",
     "name": "EPS Power R",
     "scale": 0.001,
     "signed": true,
@@ -349,7 +349,7 @@
       39215,
       39214
     ],
-    "key": "eps_power_S",
+    "key": "backup_power_S",
     "name": "EPS Power S",
     "scale": 0.001,
     "signed": true,
@@ -360,7 +360,7 @@
       39217,
       39216
     ],
-    "key": "eps_power_T",
+    "key": "backup_power_T",
     "name": "EPS Power T",
     "scale": 0.001,
     "signed": true,
@@ -371,7 +371,7 @@
       39205,
       39204
     ],
-    "key": "eps_rcurrent_R",
+    "key": "backup_current_R",
     "name": "EPS Current R",
     "scale": 0.001,
     "signed": true,
@@ -382,7 +382,7 @@
       39207,
       39206
     ],
-    "key": "eps_rcurrent_S",
+    "key": "backup_current_S",
     "name": "EPS Current S",
     "scale": 0.001,
     "signed": true,
@@ -393,7 +393,7 @@
       39209,
       39208
     ],
-    "key": "eps_rcurrent_T",
+    "key": "backup_current_T",
     "name": "EPS Current T",
     "scale": 0.001,
     "signed": true,
@@ -403,7 +403,7 @@
     "addresses": [
       39201
     ],
-    "key": "eps_rvolt_R",
+    "key": "backup_volt_R",
     "name": "EPS Voltage_R",
     "scale": 0.1,
     "signed": false,
@@ -413,7 +413,7 @@
     "addresses": [
       39202
     ],
-    "key": "eps_rvolt_S",
+    "key": "backup_volt_S",
     "name": "EPS Voltage_S",
     "scale": 0.1,
     "signed": false,
@@ -423,7 +423,7 @@
     "addresses": [
       39203
     ],
-    "key": "eps_rvolt_T",
+    "key": "backup_volt_T",
     "name": "EPS Voltage_T",
     "scale": 0.1,
     "signed": false,
@@ -434,7 +434,7 @@
       38815,
       38814
     ],
-    "key": "feed_in",
+    "key": "grid_power_export",
     "name": "Feed-in",
     "scale": 0.0001,
     "signed": true,
@@ -445,7 +445,7 @@
       38817,
       38816
     ],
-    "key": "feed_in_R",
+    "key": "grid_power_export_R",
     "name": "Feed-in R",
     "scale": 0.0001,
     "signed": true,
@@ -456,7 +456,7 @@
       38819,
       38818
     ],
-    "key": "feed_in_S",
+    "key": "grid_power_export_S",
     "name": "Feed-in S",
     "scale": 0.0001,
     "signed": true,
@@ -467,7 +467,7 @@
       38821,
       38820
     ],
-    "key": "feed_in_T",
+    "key": "grid_power_export_T",
     "name": "Feed-in T",
     "scale": 0.0001,
     "signed": true,
@@ -478,7 +478,7 @@
       39616,
       39615
     ],
-    "key": "feed_in_energy_today",
+    "key": "grid_power_export_energy_today",
     "name": "Feed-in Today",
     "scale": 0.01,
     "signed": true,
@@ -489,7 +489,7 @@
       39614,
       39613
     ],
-    "key": "feed_in_energy_total",
+    "key": "grid_power_export_energy_total",
     "name": "Feed-in Total",
     "scale": 0.01,
     "signed": false,
@@ -500,7 +500,7 @@
       38815,
       38814
     ],
-    "key": "grid_consumption",
+    "key": "grid_power_import",
     "name": "Grid Consumption",
     "scale": 0.0001,
     "signed": true,
@@ -511,7 +511,7 @@
       38817,
       38816
     ],
-    "key": "grid_consumption_R",
+    "key": "grid_power_import_R",
     "name": "Grid Consumption R",
     "scale": 0.0001,
     "signed": true,
@@ -522,7 +522,7 @@
       38819,
       38818
     ],
-    "key": "grid_consumption_S",
+    "key": "grid_power_import_S",
     "name": "Grid Consumption S",
     "scale": 0.0001,
     "signed": true,
@@ -533,7 +533,7 @@
       38821,
       38820
     ],
-    "key": "grid_consumption_T",
+    "key": "grid_power_import_T",
     "name": "Grid Consumption T",
     "scale": 0.0001,
     "signed": true,
@@ -544,7 +544,7 @@
       39620,
       39619
     ],
-    "key": "grid_consumption_energy_today",
+    "key": "grid_power_import_energy_today",
     "name": "Grid Consumption Today",
     "scale": 0.01,
     "signed": true,
@@ -555,7 +555,7 @@
       39618,
       39617
     ],
-    "key": "grid_consumption_energy_total",
+    "key": "grid_power_import_energy_total",
     "name": "Grid Consumption Total",
     "scale": 0.01,
     "signed": false,
@@ -566,7 +566,7 @@
       38815,
       38814
     ],
-    "key": "grid_ct",
+    "key": "grid_power",
     "name": "Grid CT",
     "scale": 0.0001,
     "signed": true,
@@ -577,7 +577,7 @@
       38817,
       38816
     ],
-    "key": "grid_ct_R",
+    "key": "grid_power_R",
     "name": "Grid CT R",
     "scale": 0.0001,
     "signed": true,
@@ -588,7 +588,7 @@
       38819,
       38818
     ],
-    "key": "grid_ct_S",
+    "key": "grid_power_S",
     "name": "Grid CT S",
     "scale": 0.0001,
     "signed": true,
@@ -599,7 +599,7 @@
       38821,
       38820
     ],
-    "key": "grid_ct_T",
+    "key": "grid_power_T",
     "name": "Grid CT T",
     "scale": 0.0001,
     "signed": true,
@@ -610,7 +610,7 @@
       38831,
       38830
     ],
-    "key": "grid_ct_apparent",
+    "key": "grid_power_apparent",
     "name": "Grid CT (Apparent)",
     "scale": 0.0001,
     "signed": true,
@@ -621,7 +621,7 @@
       38833,
       38832
     ],
-    "key": "grid_ct_apparent_R",
+    "key": "grid_power_apparent_R",
     "name": "Grid CT (Apparent) R",
     "scale": 0.0001,
     "signed": true,
@@ -632,7 +632,7 @@
       38835,
       38834
     ],
-    "key": "grid_ct_apparent_S",
+    "key": "grid_power_apparent_S",
     "name": "Grid CT (Apparent) S",
     "scale": 0.0001,
     "signed": true,
@@ -643,7 +643,7 @@
       38837,
       38836
     ],
-    "key": "grid_ct_apparent_T",
+    "key": "grid_power_apparent_T",
     "name": "Grid CT (Apparent) T",
     "scale": 0.0001,
     "signed": true,
@@ -654,7 +654,7 @@
       38839,
       38838
     ],
-    "key": "grid_ct_pf",
+    "key": "grid_power_pf",
     "name": "Grid CT Power Factor",
     "scale": 1e-05,
     "signed": true,
@@ -665,7 +665,7 @@
       38841,
       38840
     ],
-    "key": "grid_ct_pf_R",
+    "key": "grid_power_pf_R",
     "name": "Grid CT Power Factor R",
     "scale": 1e-05,
     "signed": true,
@@ -676,7 +676,7 @@
       38843,
       38842
     ],
-    "key": "grid_ct_pf_S",
+    "key": "grid_power_pf_S",
     "name": "Grid CT Power Factor S",
     "scale": 1e-05,
     "signed": true,
@@ -687,7 +687,7 @@
       38845,
       38844
     ],
-    "key": "grid_ct_pf_T",
+    "key": "grid_power_pf_T",
     "name": "Grid CT Power Factor T",
     "scale": 1e-05,
     "signed": true,
@@ -698,7 +698,7 @@
       38823,
       38822
     ],
-    "key": "grid_ct_reactive",
+    "key": "grid_power_reactive",
     "name": "Grid CT (Reactive)",
     "scale": 0.0001,
     "signed": true,
@@ -709,7 +709,7 @@
       38825,
       38824
     ],
-    "key": "grid_ct_reactive_R",
+    "key": "grid_power_reactive_R",
     "name": "Grid CT (Reactive) R",
     "scale": 0.0001,
     "signed": true,
@@ -720,7 +720,7 @@
       38827,
       38826
     ],
-    "key": "grid_ct_reactive_S",
+    "key": "grid_power_reactive_S",
     "name": "Grid CT (Reactive) S",
     "scale": 0.0001,
     "signed": true,
@@ -731,7 +731,7 @@
       38829,
       38828
     ],
-    "key": "grid_ct_reactive_T",
+    "key": "grid_power_reactive_T",
     "name": "Grid CT (Reactive) T",
     "scale": 0.0001,
     "signed": true,
@@ -794,7 +794,7 @@
       39127,
       39126
     ],
-    "key": "inv_current_R",
+    "key": "inverter_current_R",
     "name": "Inverter Current R",
     "scale": 0.001,
     "signed": true,
@@ -805,7 +805,7 @@
       39129,
       39128
     ],
-    "key": "inv_current_S",
+    "key": "inverter_current_S",
     "name": "Inverter Current S",
     "scale": 0.001,
     "signed": true,
@@ -816,7 +816,7 @@
       39131,
       39130
     ],
-    "key": "inv_current_T",
+    "key": "inverter_current_T",
     "name": "Inverter Current T",
     "scale": 0.001,
     "signed": true,
@@ -827,7 +827,7 @@
       39135,
       39134
     ],
-    "key": "inv_power",
+    "key": "inverter_power",
     "name": "Inverter Power",
     "scale": 1e-06,
     "signed": true,
@@ -838,7 +838,7 @@
       39137,
       39136
     ],
-    "key": "inv_power_Q",
+    "key": "inverter_power_Q",
     "name": "Inverter Power (Reactive)",
     "scale": 0.001,
     "signed": true,
@@ -849,7 +849,7 @@
       39257,
       39256
     ],
-    "key": "inv_power_Q_R",
+    "key": "inverter_power_Q_R",
     "name": "Inverter Power (Reactive) R",
     "scale": 0.001,
     "signed": true,
@@ -860,7 +860,7 @@
       39259,
       39258
     ],
-    "key": "inv_power_Q_S",
+    "key": "inverter_power_Q_S",
     "name": "Inverter Power (Reactive) S",
     "scale": 0.001,
     "signed": true,
@@ -871,7 +871,7 @@
       39261,
       39260
     ],
-    "key": "inv_power_Q_T",
+    "key": "inverter_power_Q_T",
     "name": "Inverter Power (Reactive) T",
     "scale": 0.001,
     "signed": true,
@@ -882,7 +882,7 @@
       39249,
       39248
     ],
-    "key": "inv_power_R",
+    "key": "inverter_power_R",
     "name": "Inverter Power R",
     "scale": 0.001,
     "signed": true,
@@ -893,7 +893,7 @@
       39251,
       39250
     ],
-    "key": "inv_power_S",
+    "key": "inverter_power_S",
     "name": "Inverter Power S",
     "scale": 0.001,
     "signed": true,
@@ -904,7 +904,7 @@
       39253,
       39252
     ],
-    "key": "inv_power_T",
+    "key": "inverter_power_T",
     "name": "Inverter Power T",
     "scale": 0.001,
     "signed": true,
@@ -937,7 +937,7 @@
       39238,
       39237
     ],
-    "key": "invbatpower",
+    "key": "battery_power",
     "name": "Inverter Battery Power",
     "scale": 0.001,
     "signed": true,
@@ -948,7 +948,7 @@
       39231,
       39230
     ],
-    "key": "invbatpower_1",
+    "key": "battery_power_1",
     "name": "Inverter Battery 1 Power",
     "scale": 0.001,
     "signed": true,
@@ -959,7 +959,7 @@
       39236,
       39235
     ],
-    "key": "invbatpower_2",
+    "key": "battery_power_2",
     "name": "Inverter Battery 2 Power",
     "scale": 0.001,
     "signed": true,
@@ -969,7 +969,7 @@
     "addresses": [
       39227
     ],
-    "key": "invbatvolt_1",
+    "key": "invbattery_voltage_1",
     "name": "Inverter Battery 1 Voltage",
     "scale": 0.1,
     "signed": true,
@@ -979,7 +979,7 @@
     "addresses": [
       39232
     ],
-    "key": "invbatvolt_2",
+    "key": "invbattery_voltage_2",
     "name": "Inverter Battery 2 Voltage",
     "scale": 0.1,
     "signed": true,
@@ -1064,7 +1064,7 @@
     "addresses": [
       39141
     ],
-    "key": "invtemp",
+    "key": "inverter_temperature",
     "name": "Inverter Temp",
     "scale": 0.1,
     "signed": true,
@@ -1158,7 +1158,7 @@
     "addresses": [
       46607
     ],
-    "key": "max_charge_current",
+    "key": "battery_max_charge_current",
     "name": "Max Charge Current",
     "scale": 0.1,
     "signed": true,
@@ -1168,7 +1168,7 @@
     "addresses": [
       46607
     ],
-    "key": "max_charge_current",
+    "key": "battery_max_charge_current",
     "name": "Max Charge Current",
     "scale": 0.1,
     "type": "number"
@@ -1177,7 +1177,7 @@
     "addresses": [
       46608
     ],
-    "key": "max_discharge_current",
+    "key": "battery_max_discharge_current",
     "name": "Max Discharge Current",
     "scale": 0.1,
     "signed": true,
@@ -1187,7 +1187,7 @@
     "addresses": [
       46608
     ],
-    "key": "max_discharge_current",
+    "key": "battery_max_discharge_current",
     "name": "Max Discharge Current",
     "scale": 0.1,
     "type": "number"
@@ -1215,7 +1215,7 @@
     "addresses": [
       46609
     ],
-    "key": "min_soc",
+    "key": "battery_min_soc",
     "name": "Min SoC",
     "scale": null,
     "signed": true,
@@ -1225,7 +1225,7 @@
     "addresses": [
       46609
     ],
-    "key": "min_soc",
+    "key": "battery_min_soc",
     "name": "Min SoC",
     "scale": null,
     "type": "number"
@@ -1234,7 +1234,7 @@
     "addresses": [
       46611
     ],
-    "key": "min_soc_on_grid",
+    "key": "battery_min_soc_on_grid",
     "name": "Min SoC (On Grid)",
     "scale": null,
     "signed": true,
@@ -1244,7 +1244,7 @@
     "addresses": [
       46611
     ],
-    "key": "min_soc_on_grid",
+    "key": "battery_min_soc_on_grid",
     "name": "Min SoC (On Grid)",
     "scale": null,
     "type": "number"
@@ -1553,7 +1553,7 @@
       39604,
       39603
     ],
-    "key": "solar_energy_today",
+    "key": "pv_energy_today",
     "name": "Solar Generation Today",
     "scale": 0.01,
     "signed": false,
@@ -1564,7 +1564,7 @@
       39602,
       39601
     ],
-    "key": "solar_energy_total",
+    "key": "pv_energy_total",
     "name": "Solar Generation Total",
     "scale": 0.01,
     "signed": false,
