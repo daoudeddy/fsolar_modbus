@@ -1299,120 +1299,131 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     yield ModbusWorkModeSelectDescription(
         key="work_mode",
         address=[
-            ModbusAddressSpec(input=41000, models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressSpec(holding=41000, models=Inv.H1_G1 | Inv.KH_PRE133 | Inv.KH_133),
+            ModbusAddressSpec(holding=8451, models=Inv.TREX),
         ],
         name="Work Mode",
-        options_map={0: "Self Use", 1: "Feed-in First", 2: "Back-up"},
+        options_map={0: "General", 1: "Backup", 2: "Impex"},
     )
+
+    # Impex mode
     yield ModbusWorkModeSelectDescription(
-        key="work_mode",
+        key="impex_mode",
         address=[
-            ModbusAddressSpec(holding=49203, models=Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressSpec(holding=8568, models=Inv.TREX),
         ],
-        name="Work Mode",
-        options_map={
-            1: "Self Use",
-            2: "Feed-in First",
-            3: "Back-up",
-            4: "Peak Shaving",
-        },
+        name="Impex Mode",
+        options_map={0: "Disable", 1: "Charge", 2: "Discharge"},
     )
-    yield ModbusWorkModeSelectDescription(
-        key="work_mode",
-        address=[
-            ModbusAddressSpec(holding=41000, models=Inv.H1_G2_SET | Inv.H3_SET & ~Inv.AIO_H3_PRE101),
+    # Min SoC (Off Grid)
+    yield ModbusSensorDescription(
+        key="min_soc_impex",
+        addresses=[
+            ModbusAddressesSpec(holding=[8575], models=Inv.GWETP),
         ],
-        name="Work Mode",
-        options_map={0: "Self Use", 1: "Feed-in First", 2: "Back-up", 4: "Peak Shaving"},
+        name="Battery Min SoC Impex",
+        device_class=SensorDeviceClass.BATTERY,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:battery-arrow-down",
+        native_unit_of_measurement="%",
+        validate=[Range(0, 100)],
+    )
+    yield ModbusNumberDescription(
+        key="min_soc_impex",
+        address=[
+            ModbusAddressSpec(holding=8575, models=Inv.TREX),
+        ],
+        name="Battery Min SoC Impex",
+        mode=NumberMode.BOX,
+        native_min_value=0,
+        native_max_value=100,
+        native_step=1,
+        native_unit_of_measurement="%",
+        device_class=NumberDeviceClass.BATTERY,
+        icon="mdi:battery-arrow-down",
+        validate=[Range(0, 100)],
+    )
+    yield ModbusNumberDescription(
+        key="battery_power_impex",
+        address=[
+            ModbusAddressSpec(holding=8576, models=Inv.TREX),
+        ],
+        name="Battery Power Impex",
+        mode=NumberMode.BOX,
+        native_min_value=0,
+        native_max_value=10,
+        native_step=0.1,
+        native_unit_of_measurement="kW",
+        scale=0.001,
+        validate=[Range(0, 10)],
     )
 
     # Max Charge Current
     yield ModbusSensorDescription(
         key="max_charge_current",
         addresses=[
-            ModbusAddressesSpec(input=[41007], models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressesSpec(
-                holding=[41007],
-                models=Inv.H1_G1 | Inv.H1_G2_SET | Inv.H3_SET & ~Inv.AIO_H3_PRE101 | Inv.KH_PRE133 | Inv.KH_133,
-            ),
-            ModbusAddressesSpec(holding=[46607], models=Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressesSpec(holding=[8493], models=Inv.TREX),
         ],
-        name="Max Charge Current",
+        name="Battery Max Charge Current",
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="A",
         scale=0.1,
-        validate=[Range(0, 50)],
+        round_to=1,
+        validate=[Range(0, 200)],
     )
     yield ModbusNumberDescription(
         key="max_charge_current",
         address=[
-            ModbusAddressSpec(input=41007, models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressSpec(
-                holding=41007,
-                models=Inv.H1_G1 | Inv.H1_G2_SET | Inv.H3_SET & ~Inv.AIO_H3_PRE101 | Inv.KH_PRE133 | Inv.KH_133,
-            ),
-            ModbusAddressSpec(holding=46607, models=Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressSpec(holding=8493, models=Inv.TREX),
         ],
-        name="Max Charge Current",
+        name="Battery Max Charge Current",
         mode=NumberMode.BOX,
         device_class=NumberDeviceClass.CURRENT,
         native_min_value=0,
-        native_max_value=50,
+        native_max_value=200,
         native_step=0.1,
         native_unit_of_measurement="A",
         scale=0.1,
-        validate=[Range(0, 50)],
+        validate=[Range(0, 200)],
     )
 
     # Max Discharge Current
     yield ModbusSensorDescription(
         key="max_discharge_current",
         addresses=[
-            ModbusAddressesSpec(input=[41008], models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressesSpec(
-                holding=[41008],
-                models=Inv.H1_G1 | Inv.H1_G2_SET | Inv.H3_SET & ~Inv.AIO_H3_PRE101 | Inv.KH_PRE133 | Inv.KH_133,
-            ),
-            ModbusAddressesSpec(holding=[46608], models=Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressesSpec(holding=[8494], models=Inv.TREX),
         ],
-        name="Max Discharge Current",
+        name="Battery Max Discharge Current",
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="A",
         scale=0.1,
-        validate=[Range(0, 50)],
+        round_to=1,
+        validate=[Range(0, 200)],
     )
     yield ModbusNumberDescription(
         key="max_discharge_current",
         address=[
-            ModbusAddressSpec(input=41008, models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressSpec(
-                holding=41008,
-                models=Inv.H1_G1 | Inv.H1_G2_SET | Inv.KH_PRE133 | Inv.KH_133 | Inv.H3_SET & ~Inv.AIO_H3_PRE101,
-            ),
-            ModbusAddressSpec(holding=46608, models=Inv.H3_PRO_SET | Inv.H3_SMART),
+            ModbusAddressSpec(holding=8494, models=Inv.TREX),
         ],
-        name="Max Discharge Current",
+        name="Battery Max Discharge Current",
         mode=NumberMode.BOX,
         device_class=NumberDeviceClass.CURRENT,
         native_min_value=0,
-        native_max_value=50,
+        native_max_value=200,
         native_step=0.1,
         native_unit_of_measurement="A",
         scale=0.1,
-        validate=[Range(0, 50)],
+        validate=[Range(0, 200)],
     )
 
     # Min SoC (Off Grid)
     yield ModbusSensorDescription(
         key="min_soc",
         addresses=[
-            ModbusAddressesSpec(input=[8491], models=Inv.TREX),
             ModbusAddressesSpec(holding=[8491], models=Inv.TREX),
         ],
-        name="Battery Min SoC (Off Grid)",
+        name="Battery Min SoC OffGrid",
         device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:battery-arrow-down",
@@ -1422,10 +1433,9 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     yield ModbusNumberDescription(
         key="min_soc",
         address=[
-            ModbusAddressSpec(input=8491, models=Inv.TREX),
             ModbusAddressSpec(holding=8491, models=Inv.TREX),
         ],
-        name="Battery Min SoC (Off Grid)",
+        name="Battery Min SoC OffGrid",
         mode=NumberMode.BOX,
         native_min_value=0,
         native_max_value=100,
@@ -1433,45 +1443,6 @@ def _configuration_entities() -> Iterable[EntityFactory]:
         native_unit_of_measurement="%",
         device_class=NumberDeviceClass.BATTERY,
         icon="mdi:battery-arrow-down",
-        validate=[Range(0, 100)],
-    )
-
-    # Max SoC
-    yield ModbusSensorDescription(
-        key="max_soc",
-        addresses=[
-            ModbusAddressesSpec(input=[41010], models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressesSpec(
-                holding=[41010],
-                models=Inv.H1_G1 | Inv.H1_G2_SET | Inv.H3_SET & ~Inv.AIO_H3_PRE101 | Inv.KH_PRE133 | Inv.KH_133,
-            ),
-            ModbusAddressesSpec(holding=[46610], models=Inv.H3_PRO_SET | Inv.H3_SMART),
-        ],
-        name="Battery Max SoC",
-        device_class=SensorDeviceClass.BATTERY,
-        state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement="%",
-        icon="mdi:battery-arrow-up",
-        validate=[Range(0, 100)],
-    )
-    yield ModbusNumberDescription(
-        key="max_soc",
-        address=[
-            ModbusAddressSpec(input=41010, models=Inv.H1_G1 | Inv.KH_PRE119),
-            ModbusAddressSpec(
-                holding=41010,
-                models=Inv.H1_G1 | Inv.H1_G2_SET | Inv.H3_SET & ~Inv.AIO_H3_PRE101 | Inv.KH_PRE133 | Inv.KH_133,
-            ),
-            ModbusAddressSpec(holding=46610, models=Inv.H3_PRO_SET | Inv.H3_SMART),
-        ],
-        name="Battery Max SoC",
-        mode=NumberMode.BOX,
-        native_min_value=10,
-        native_max_value=100,
-        native_step=1,
-        native_unit_of_measurement="%",
-        device_class=NumberDeviceClass.BATTERY,
-        icon="mdi:battery-arrow-up",
         validate=[Range(0, 100)],
     )
 
@@ -1479,10 +1450,9 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     yield ModbusSensorDescription(
         key="min_soc_on_grid",
         addresses=[
-            ModbusAddressesSpec(input=[8490], models=Inv.TREX),
             ModbusAddressesSpec(holding=[8490], models=Inv.TREX),
         ],
-        name="Battery Min SoC (On Grid)",
+        name="Battery Min SoC OnGrid",
         device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="%",
@@ -1492,10 +1462,9 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     yield ModbusNumberDescription(
         key="min_soc_on_grid",
         address=[
-            ModbusAddressSpec(input=8490, models=Inv.TREX),
             ModbusAddressSpec(holding=8490, models=Inv.TREX),
         ],
-        name="Battery Min SoC (On Grid)",
+        name="Battery Min SoC OnGrid",
         mode=NumberMode.BOX,
         native_min_value=10,
         native_max_value=100,
