@@ -4,7 +4,7 @@
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 [![Community Forum][forum-shield]][forum]
 
-\*\* **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by Felicity Solar** \*\*
+\*\* **This project is archived since another similar integration exists: https://github.com/partach/ha_felicity** \*\*
 
 ## Introduction
 
