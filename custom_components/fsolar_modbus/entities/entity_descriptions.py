@@ -9,8 +9,10 @@ from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.sensor import SensorStateClass
 
 from ..common.register_types import Inv
+from ..common.register_types import RegisterType
 from .charge_period_descriptions import CHARGE_PERIODS
 from .entity_factory import EntityFactory
+from .inverter_model_spec import EntitySpec
 from .inverter_model_spec import ModbusAddressesSpec
 from .inverter_model_spec import ModbusAddressSpec
 from .modbus_battery_sensor import ModbusBatterySensorDescription
@@ -21,6 +23,7 @@ from .modbus_fault_sensor import ModbusFaultSensorDescription
 from .modbus_inverter_state_sensor import TREX_INVERTER_STATES
 from .modbus_inverter_state_sensor import ModbusG2InverterStateSensorDescription
 from .modbus_inverter_state_sensor import ModbusInverterStateSensorDescription
+from .modbus_lambda_sensor import ModbusLambdaSensorDescription
 from .modbus_number import ModbusNumberDescription
 from .modbus_sensor import ModbusSensorDescription
 from .modbus_version_sensor import ModbusVersionSensorDescription
@@ -181,6 +184,23 @@ def _pv_entities() -> Iterable[EntityFactory]:
             ModbusAddressesSpec(holding=[4380], models=Inv.TREX),
         ],
         name="PV2 Power",
+    )
+
+    yield ModbusLambdaSensorDescription(
+        key="pv_power",
+        models=[
+            EntitySpec(
+                register_types=[RegisterType.INPUT, RegisterType.HOLDING],
+                models=Inv.ALL & ~(Inv.KH_SET | Inv.H3_PRO_SET | Inv.H3_SMART),
+            ),
+        ],
+        sources=["pv1_power", "pv2_power"],
+        method=sum,
+        name="PV Power",
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="kW",
+        icon="mdi:solar-power-variant-outline",
     )
 
 

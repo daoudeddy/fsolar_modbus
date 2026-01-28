@@ -1484,7 +1484,7 @@
     "type": "sensor"
   },
   {
-    "key": "pv_power_now",
+    "key": "pv_power",
     "name": "PV Power",
     "sources": [
       "pv1_power",
