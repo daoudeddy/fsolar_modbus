@@ -929,19 +929,7 @@ def _configuration_entities() -> Iterable[EntityFactory]:
         name="Impex Mode",
         options_map={0: "Disable", 1: "Charge", 2: "Discharge"},
     )
-    # Min SoC (Off Grid)
-    yield ModbusSensorDescription(
-        key="battery_battery_min_soc_impex",
-        addresses=[
-            ModbusAddressesSpec(holding=[8575], models=Inv.GWETP),
-        ],
-        name="Battery Min SoC Impex",
-        device_class=SensorDeviceClass.BATTERY,
-        state_class=SensorStateClass.MEASUREMENT,
-        icon="mdi:battery-arrow-down",
-        native_unit_of_measurement="%",
-        validate=[Range(0, 100)],
-    )
+
     yield ModbusNumberDescription(
         key="battery_battery_min_soc_impex",
         address=[
@@ -973,19 +961,6 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     )
 
     # Max Charge Current
-    yield ModbusSensorDescription(
-        key="battery_max_charge_current",
-        addresses=[
-            ModbusAddressesSpec(holding=[8493], models=Inv.TREX),
-        ],
-        name="Battery Max Charge Current",
-        device_class=SensorDeviceClass.CURRENT,
-        state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement="A",
-        scale=0.1,
-        round_to=1,
-        validate=[Range(0, 200)],
-    )
     yield ModbusNumberDescription(
         key="battery_max_charge_current",
         address=[
@@ -1003,19 +978,6 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     )
 
     # Max Discharge Current
-    yield ModbusSensorDescription(
-        key="battery_max_discharge_current",
-        addresses=[
-            ModbusAddressesSpec(holding=[8494], models=Inv.TREX),
-        ],
-        name="Battery Max Discharge Current",
-        device_class=SensorDeviceClass.CURRENT,
-        state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement="A",
-        scale=0.1,
-        round_to=1,
-        validate=[Range(0, 200)],
-    )
     yield ModbusNumberDescription(
         key="battery_max_discharge_current",
         address=[
@@ -1033,18 +995,6 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     )
 
     # Min SoC (Off Grid)
-    yield ModbusSensorDescription(
-        key="battery_min_soc",
-        addresses=[
-            ModbusAddressesSpec(holding=[8491], models=Inv.TREX),
-        ],
-        name="Battery Min SoC OffGrid",
-        device_class=SensorDeviceClass.BATTERY,
-        state_class=SensorStateClass.MEASUREMENT,
-        icon="mdi:battery-arrow-down",
-        native_unit_of_measurement="%",
-        validate=[Range(0, 100)],
-    )
     yield ModbusNumberDescription(
         key="battery_min_soc",
         address=[
@@ -1062,18 +1012,6 @@ def _configuration_entities() -> Iterable[EntityFactory]:
     )
 
     # Min SoC (On Grid)
-    yield ModbusSensorDescription(
-        key="battery_min_soc_on_grid",
-        addresses=[
-            ModbusAddressesSpec(holding=[8490], models=Inv.TREX),
-        ],
-        name="Battery Min SoC OnGrid",
-        device_class=SensorDeviceClass.BATTERY,
-        state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement="%",
-        icon="mdi:battery-arrow-down",
-        validate=[Range(0, 100)],
-    )
     yield ModbusNumberDescription(
         key="battery_min_soc_on_grid",
         address=[
