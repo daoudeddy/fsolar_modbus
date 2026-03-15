@@ -31,9 +31,7 @@ _DEFAULT_PORT = 502
 # Felicity
 _DEFAULT_SLAVE = 1
 _DEFAULT_BAUDRATE = 2400
-# GoodWe
-#_DEFAULT_SLAVE = 247
-#_DEFAULT_BAUDRATE = 9600
+_AUTODETECT_BAUDRATES = (_DEFAULT_BAUDRATE, 9600)
 
 
 class AdapterFlowSegment:
@@ -295,15 +293,44 @@ class AdapterFlowSegment:
         try:
             if protocol in [TCP, UDP, RTU_OVER_TCP]:
                 params = {"host": host.split(":")[0], "port": int(host.split(":")[1])}
-            elif protocol == SERIAL:
-                assert baudrate is not None
-                params = {"port": host, "baudrate": baudrate}
             else:
-                raise AssertionError()
+                assert protocol == SERIAL
+                assert baudrate is not None
+
+                base_model: str | None = None
+                full_model: str | None = None
+                last_exception: Exception | None = None
+                tried_baudrates: list[int] = []
+                for candidate_baudrate in (baudrate, *_AUTODETECT_BAUDRATES):
+                    if candidate_baudrate in tried_baudrates:
+                        continue
+                    tried_baudrates.append(candidate_baudrate)
+
+                    params = {"port": host, "baudrate": candidate_baudrate}
+                    client = ModbusClient(self._flow.hass, protocol, adapter, params)
+                    try:
+                        base_model, full_model = await ModbusController.autodetect(
+                            client, slave, adapter.config.inverter_config(protocol)
+                        )
+                        baudrate = candidate_baudrate
+                        break
+                    except Exception as ex:  # noqa: BLE001
+                        last_exception = ex
+
+                if base_model is None or full_model is None:
+                    assert last_exception is not None
+                    raise last_exception
+
+                self.inverter_data.inverter_base_model = base_model
+                self.inverter_data.inverter_model = full_model
+                self.inverter_data.inverter_protocol = protocol
+                self.inverter_data.modbus_slave = slave
+                self.inverter_data.modbus_serial_baud = baudrate
+                self.inverter_data.host = host
+                return
+
             client = ModbusClient(self._flow.hass, protocol, adapter, params)
-            base_model, full_model = await ModbusController.autodetect(
-                client, slave, adapter.config.inverter_config(protocol)
-            )
+            base_model, full_model = await ModbusController.autodetect(client, slave, adapter.config.inverter_config(protocol))
 
             self.inverter_data.inverter_base_model = base_model
             self.inverter_data.inverter_model = full_model

@@ -130,6 +130,18 @@ class CapacityParser:
 
 CapacityParser.DEFAULT = CapacityParser(capacity_map=None, fallback_to_kw=True)
 CapacityParser.H1 = CapacityParser(capacity_map={"3.7": 3680}, fallback_to_kw=True)
+CapacityParser.IVEM = CapacityParser(
+    capacity_map={
+        "3024": 3000,
+        "3048": 3000,
+        "4024": 4000,
+        "5048": 5000,
+        "6048": 6000,
+        "8048": 8000,
+        "12048": 12000,
+    },
+    fallback_to_kw=False,
+)
 
 
 class InverterModelConnectionTypeProfile:
@@ -465,6 +477,15 @@ _INVERTER_PROFILES_LIST = [
         ConnectionType.AUX,
         RegisterType.HOLDING,
         versions={None: Inv.GWETP},
+    ),
+    InverterModelProfile(
+        InverterModel.IVEM,
+        r"^(?:IVEM|AI100-)(\d+)(?:II|LV)?$",
+        capacity_parser=CapacityParser.IVEM,
+    ).add_connection_type(
+        ConnectionType.AUX,
+        RegisterType.HOLDING,
+        versions={None: Inv.IVEM},
     ),
     # Solavita SP
     # These have the form 'T-REX-10KLP3G01', but the number doesn't map to a power

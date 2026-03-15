@@ -19,6 +19,7 @@ See [Supported Features](https://github.com/comcowo/fsolar_modbus/wiki/Supported
 
 Supported models:
 
+- Felicity Solar IVEM / AI100 RS232 models
 - Felicity Solar Inverter T-REX
 
 You will need a direct connection to your inverter.

@@ -59,6 +59,7 @@ class InverterModel(StrEnum):
     H3_PRO = "H3_PRO"
     H3_SMART = "H3_SMART"
 
+    IVEM = "IVEM"
     TREX = "TREX"
     GWETP = "GWETP"
 
@@ -94,10 +95,11 @@ class Inv(Flag):
 
     H3_SMART = auto()
 
+    IVEM = auto()
     TREX = auto()
     GWETP = auto()
 
-    ALL = H1_LAN | H1_G1 | H1_G2_SET | KH_SET | H3_SET | H3_PRO_SET | H3_SMART | TREX | GWETP
+    ALL = H1_LAN | H1_G1 | H1_G2_SET | KH_SET | H3_SET | H3_PRO_SET | H3_SMART | IVEM | TREX | GWETP
 
 
 class RegisterPollType(IntEnum):

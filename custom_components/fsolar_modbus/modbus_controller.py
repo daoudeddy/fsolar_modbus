@@ -50,6 +50,21 @@ _NUM_FAILED_POLLS_FOR_DISCONNECTION = 5
 _MODEL_START_ADDRESS = 63488
 _MODEL_LENGTH = 2
 
+_IVEM_SUBTYPE_TO_MODEL = {
+    0x0204: "IVEM3024",
+    0x0206: "IVEM4024",
+    0x0408: "IVEM5048",
+    0x040A: "IVEM6048",
+    0x040B: "IVEM6048II",
+    0x040E: "IVEM8048",
+    0x040F: "IVEM8048II",
+    0x0416: "IVEM12048II",
+    0x1404: "IVEM3048LV",
+    0x1408: "IVEM5048LV",
+    0x2408: "AI100-5048",
+    0x240E: "AI100-8048",
+}
+
 # GoodWe
 # _MODEL_START_ADDRESS = 35011
 # _MODEL_LENGTH = 5
@@ -646,28 +661,29 @@ class ModbusController(EntityController, UnloadController):
             # # Take off tailing spaces and H3's leading space
             # full_model = full_model.strip()
 
-            # Felicity Solar
-            power_val = register_values[1] & 0x00FF
-            # battery voltage is calculated by multiplying the 8 bit high with 12V
-            voltage_val = register_values[1] >> 8 * 12
-            if register_values[0] == 0x51:
+            if register_values[0] == 0x50:
+                full_model = _IVEM_SUBTYPE_TO_MODEL.get(register_values[1], f"IVEM-0x{register_values[1]:04X}")
+            elif register_values[0] == 0x51:
+                power_val = register_values[1] & 0x00FF
+                # battery voltage is calculated by multiplying the 8 bit high with 12V
+                voltage_val = register_values[1] >> 8 * 12
                 full_model = "T-REX-"
-            if power_val == 0x08:
-                full_model += "5"
-            if power_val == 0x10:
-                full_model += "9"
-            if power_val == 0x12:
-                full_model += "10"
-            if power_val == 0x62:
-                full_model += "50"
-            full_model += "K"
-            # if the battery voltage is less than 100, we assume it is a low voltage system (usually 48V)
-            if voltage_val <= 100:
-                full_model += "L"
-            else:
-                full_model += "H"
-            # Currently only 3phase is supported
-            full_model += "P3G01"
+                if power_val == 0x08:
+                    full_model += "5"
+                if power_val == 0x10:
+                    full_model += "9"
+                if power_val == 0x12:
+                    full_model += "10"
+                if power_val == 0x62:
+                    full_model += "50"
+                full_model += "K"
+                # if the battery voltage is less than 100, we assume it is a low voltage system (usually 48V)
+                if voltage_val <= 100:
+                    full_model += "L"
+                else:
+                    full_model += "H"
+                # Currently only 3phase is supported
+                full_model += "P3G01"
 
             # Take off tailing spaces and H3's leading space
             full_model = full_model.strip()

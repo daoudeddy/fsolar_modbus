@@ -30,6 +30,7 @@ class ModbusBinarySensorDescription(BinarySensorEntityDescription, EntityFactory
 
     address: list[InverterModelSpec]
     validate: list[BaseValidator] = field(default_factory=list)
+    mask: int | None = None
     icon_func: Callable[[bool | None], str | None] | None
 
     @property
@@ -80,9 +81,12 @@ class ModbusBinarySensor(ModbusEntityMixin, BinarySensorEntity):
         value = self._controller.read(self._address, signed=False)
         if value is None:
             return value
-        rules = cast(ModbusBinarySensorDescription, self.entity_description).validate
+        entity_description = cast(ModbusBinarySensorDescription, self.entity_description)
+        rules = entity_description.validate
         if not self._validate(rules, value):
             return None
+        if entity_description.mask is not None:
+            return (value & entity_description.mask) > 0
         return value > 0
 
     @property

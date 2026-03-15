@@ -6,6 +6,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from custom_components.fsolar_modbus.common.exceptions import AutoconnectFailedError
+from custom_components.fsolar_modbus.const import SERIAL
 from custom_components.fsolar_modbus.const import TCP
 from custom_components.fsolar_modbus.flow.adapter_flow_segment import AdapterFlowSegment
 from custom_components.fsolar_modbus.flow.inverter_data import InverterData
@@ -108,3 +110,49 @@ async def test_network_autodetect_clears_serial_baudrate(monkeypatch: pytest.Mon
         3,
         adapter.config.inverter_config(TCP),
     )
+
+
+@pytest.mark.asyncio
+async def test_serial_autodetect_retries_known_baudrates(monkeypatch: pytest.MonkeyPatch) -> None:
+    adapter = ADAPTERS["serial_other"]
+    inverter_data = InverterData(adapter_type=adapter.adapter_type, adapter=adapter)
+
+    async def on_complete() -> dict[str, Any]:
+        return {"type": "create_entry"}
+
+    segment = AdapterFlowSegment(_FakeFlow(), inverter_data, [], on_complete)
+    modbus_client_ctor = MagicMock(side_effect=[MagicMock(), MagicMock()])
+    autodetect = AsyncMock(
+        side_effect=[
+            AutoconnectFailedError([]),
+            ("IVEM", "IVEM8048II"),
+        ]
+    )
+
+    monkeypatch.setattr(
+        "custom_components.fsolar_modbus.flow.adapter_flow_segment.ModbusClient",
+        modbus_client_ctor,
+    )
+    monkeypatch.setattr(
+        "custom_components.fsolar_modbus.flow.adapter_flow_segment.ModbusController.autodetect",
+        autodetect,
+    )
+
+    await segment._autodetect_modbus_and_save_to_inverter_data(
+        protocol=SERIAL,
+        host="/dev/ttyUSB0",
+        slave=1,
+        adapter=adapter,
+        baudrate=2400,
+    )
+
+    assert inverter_data.inverter_base_model == "IVEM"
+    assert inverter_data.inverter_model == "IVEM8048II"
+    assert inverter_data.inverter_protocol == SERIAL
+    assert inverter_data.modbus_slave == 1
+    assert inverter_data.modbus_serial_baud == 9600
+    assert inverter_data.host == "/dev/ttyUSB0"
+    assert modbus_client_ctor.call_args_list == [
+        ((segment._flow.hass, SERIAL, adapter, {"port": "/dev/ttyUSB0", "baudrate": 2400}),),
+        ((segment._flow.hass, SERIAL, adapter, {"port": "/dev/ttyUSB0", "baudrate": 9600}),),
+    ]

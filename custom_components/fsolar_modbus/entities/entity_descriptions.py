@@ -16,6 +16,7 @@ from .inverter_model_spec import EntitySpec
 from .inverter_model_spec import ModbusAddressesSpec
 from .inverter_model_spec import ModbusAddressSpec
 from .modbus_battery_sensor import ModbusBatterySensorDescription
+from .modbus_binary_sensor import ModbusBinarySensorDescription
 from .modbus_fault_sensor import STANDARD_FAULTS
 from .modbus_fault_sensor import TREX_FAULTS
 from .modbus_fault_sensor import FaultSet
@@ -38,6 +39,11 @@ from .validation import Range
 
 BMS_CONNECT_STATE_ADDRESS = [
     ModbusAddressSpec(holding=4607, models=Inv.TREX),
+]
+
+IVEM_SMART_PORT_STATES = [
+    "Generator Input",
+    "Smart Load Output",
 ]
 
 
@@ -144,6 +150,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
         addresses=[
             ModbusAddressesSpec(holding=[35103], models=Inv.GWETP),
             ModbusAddressesSpec(holding=[4375], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4390], models=Inv.IVEM),
         ],
         name="PV1 Voltage",
     )
@@ -151,6 +158,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
         key="pv1_current",
         addresses=[
             ModbusAddressesSpec(holding=[4376], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4393], models=Inv.IVEM),
         ],
         name="PV1 Current",
         scale=0.1,
@@ -160,6 +168,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
         addresses=[
             ModbusAddressesSpec(holding=[35105], models=Inv.GWETP),
             ModbusAddressesSpec(holding=[4377], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4394], models=Inv.IVEM),
         ],
         name="PV1 Power",
     )
@@ -167,6 +176,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
         key="pv2_voltage",
         addresses=[
             ModbusAddressesSpec(holding=[4378], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4441], models=Inv.IVEM),
         ],
         name="PV2 Voltage",
     )
@@ -174,6 +184,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
         key="pv2_current",
         addresses=[
             ModbusAddressesSpec(holding=[4379], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4442], models=Inv.IVEM),
         ],
         name="PV2 Current",
         scale=0.1,
@@ -182,6 +193,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
         key="pv2_power",
         addresses=[
             ModbusAddressesSpec(holding=[4380], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4443], models=Inv.IVEM),
         ],
         name="PV2 Power",
     )
@@ -435,6 +447,7 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
         )
 
     yield _load_power(phase=None, addresses=[ModbusAddressesSpec(holding=[4504, 4503], models=Inv.TREX)])
+    yield _load_power(phase=None, addresses=[ModbusAddressesSpec(holding=[4382], models=Inv.IVEM)])
 
 
 def _inverter_entities() -> Iterable[EntityFactory]:
@@ -483,6 +496,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
         index=None,
         addresses=[
             ModbusAddressesSpec(holding=[4367], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4362], models=Inv.IVEM),
         ],
     )
 
@@ -574,6 +588,7 @@ def _inverter_entities() -> Iterable[EntityFactory]:
     yield _pv_energy_total(
         addresses=[
             ModbusAddressesSpec(holding=[4441, 4440, 4439, 4438], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4412, 4411, 4410, 4409], models=Inv.IVEM),
         ],
         scale=0.001,
     )
@@ -706,9 +721,304 @@ def _inverter_entities() -> Iterable[EntityFactory]:
     yield _load_energy_total(
         addresses=[
             ModbusAddressesSpec(holding=[4451, 4450, 4449, 4448], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4428, 4427, 4426, 4425], models=Inv.IVEM),
         ],
         scale=0.001,
     )
+
+
+def _ivem_entities() -> Iterable[EntityFactory]:
+    def _sensor(
+        *,
+        key: str,
+        address: int,
+        name: str,
+        device_class: SensorDeviceClass | None = None,
+        state_class: SensorStateClass | None = SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement: str | None = None,
+        scale: float | None = None,
+        signed: bool = True,
+        icon: str | None = None,
+        round_to: float | None = None,
+        validate: list[Range | Min] | None = None,
+    ) -> EntityFactory:
+        return ModbusSensorDescription(
+            key=key,
+            addresses=[ModbusAddressesSpec(holding=[address], models=Inv.IVEM)],
+            name=name,
+            device_class=device_class,
+            state_class=state_class,
+            native_unit_of_measurement=native_unit_of_measurement,
+            scale=scale,
+            round_to=round_to,
+            signed=signed,
+            icon=icon,
+            validate=[] if validate is None else validate,
+        )
+
+    yield _sensor(key="inverter_fault_code", address=4355, name="Inverter Fault Code", signed=False)
+    yield _sensor(
+        key="inverter_voltage",
+        address=4364,
+        name="Inverter Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+        signed=False,
+    )
+    yield _sensor(
+        key="inverter_current",
+        address=4365,
+        name="Inverter Current",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement="A",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="inverter_frequency",
+        address=4366,
+        name="Inverter Frequency",
+        device_class=SensorDeviceClass.FREQUENCY,
+        native_unit_of_measurement="Hz",
+        scale=0.01,
+        signed=False,
+    )
+    yield _sensor(
+        key="inverter_power",
+        address=4367,
+        name="Inverter Power",
+        device_class=SensorDeviceClass.POWER,
+        native_unit_of_measurement="kW",
+        scale=0.001,
+        icon="mdi:flash",
+    )
+    yield _sensor(
+        key="inverter_apparent_power",
+        address=4368,
+        name="Inverter Apparent Power",
+        native_unit_of_measurement="VA",
+        signed=False,
+    )
+    yield _sensor(
+        key="ac_output_voltage",
+        address=4369,
+        name="AC Output Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+        signed=False,
+    )
+    yield _sensor(
+        key="ac_input_voltage",
+        address=4375,
+        name="AC Input Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+        signed=False,
+    )
+    yield _sensor(
+        key="ac_input_frequency",
+        address=4377,
+        name="AC Input Frequency",
+        device_class=SensorDeviceClass.FREQUENCY,
+        native_unit_of_measurement="Hz",
+        scale=0.01,
+        signed=False,
+    )
+    yield _sensor(
+        key="ac_output_apparent_power",
+        address=4383,
+        name="AC Output Apparent Power",
+        native_unit_of_measurement="VA",
+        signed=False,
+    )
+    yield _sensor(
+        key="load_percentage",
+        address=4384,
+        name="Load Percentage",
+        native_unit_of_measurement="%",
+        signed=False,
+    )
+    yield _sensor(
+        key="transformer_temperature",
+        address=4385,
+        name="Transformer Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement="°C",
+    )
+    yield _sensor(
+        key="inverter_temperature",
+        address=4386,
+        name="Inverter Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement="°C",
+    )
+    yield _sensor(
+        key="battery_temperature",
+        address=4387,
+        name="Battery Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement="°C",
+    )
+    yield _sensor(
+        key="bus_voltage",
+        address=4388,
+        name="Bus Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+        signed=False,
+    )
+    yield _sensor(
+        key="scc_temperature",
+        address=4395,
+        name="SCC Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement="°C",
+    )
+    yield _sensor(key="scc_charge_mode", address=4396, name="SCC Charge Mode", signed=False)
+    yield _sensor(key="bms_flags", address=4400, name="BMS Flags", signed=False)
+    yield _sensor(key="bms_connect_count", address=4401, name="BMS Connect Count", signed=False)
+    yield _sensor(
+        key="bms_soc",
+        address=4402,
+        name="BMS SoC",
+        device_class=SensorDeviceClass.BATTERY,
+        native_unit_of_measurement="%",
+        signed=False,
+    )
+    yield _sensor(
+        key="bms_cv_voltage",
+        address=4403,
+        name="BMS CV Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="bms_float_voltage",
+        address=4404,
+        name="BMS Float Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="bms_cutoff_voltage",
+        address=4405,
+        name="BMS Cutoff Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="bms_max_charge_current",
+        address=4406,
+        name="BMS Max Charge Current",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement="A",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="bms_max_discharge_current",
+        address=4407,
+        name="BMS Max Discharge Current",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement="A",
+        scale=0.1,
+    )
+    yield _sensor(key="bms_fault_code", address=4408, name="BMS Fault Code", signed=False)
+    yield _sensor(
+        key="generator_voltage",
+        address=4453,
+        name="Generator Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="generator_current",
+        address=4454,
+        name="Generator Current",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement="A",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="generator_frequency",
+        address=4455,
+        name="Generator Frequency",
+        device_class=SensorDeviceClass.FREQUENCY,
+        native_unit_of_measurement="Hz",
+        scale=0.01,
+    )
+    yield _sensor(
+        key="generator_power",
+        address=4456,
+        name="Generator Power",
+        device_class=SensorDeviceClass.POWER,
+        native_unit_of_measurement="kW",
+        scale=0.001,
+        signed=False,
+    )
+    yield _sensor(
+        key="smart_load_voltage",
+        address=4457,
+        name="Smart Load Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+        signed=False,
+    )
+    yield _sensor(
+        key="smart_load_current",
+        address=4458,
+        name="Smart Load Current",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement="A",
+        scale=0.1,
+    )
+    yield _sensor(
+        key="smart_load_frequency",
+        address=4459,
+        name="Smart Load Frequency",
+        device_class=SensorDeviceClass.FREQUENCY,
+        native_unit_of_measurement="Hz",
+        scale=0.01,
+        signed=False,
+    )
+    yield _sensor(
+        key="smart_load_power",
+        address=4460,
+        name="Smart Load Power",
+        device_class=SensorDeviceClass.POWER,
+        native_unit_of_measurement="kW",
+        scale=0.001,
+        signed=False,
+    )
+    yield ModbusInverterStateSensorDescription(
+        key="smart_port_status",
+        address=[ModbusAddressSpec(holding=4461, models=Inv.IVEM)],
+        name="Smart Port Status",
+        states=IVEM_SMART_PORT_STATES,
+    )
+    yield _sensor(key="eq_stage", address=4500, name="EQ Stage", signed=False)
+
+    for bit, key, name in [
+        (0x01, "bms_communication_connected", "BMS Communication Connected"),
+        (0x02, "bms_version_mismatch", "BMS Version Mismatch"),
+        (0x04, "bms_forced_charge", "BMS Forced Charge"),
+        (0x08, "bms_charge_stopped", "BMS Charge Stopped"),
+        (0x10, "bms_discharge_stopped", "BMS Discharge Stopped"),
+    ]:
+        yield ModbusBinarySensorDescription(
+            key=key,
+            address=[ModbusAddressSpec(holding=4400, models=Inv.IVEM)],
+            name=name,
+            mask=bit,
+            icon_func=None,
+        )
 
 
 def _bms_entities() -> Iterable[EntityFactory]:
@@ -850,12 +1160,15 @@ def _bms_entities() -> Iterable[EntityFactory]:
         bms_connect_state_address=BMS_CONNECT_STATE_ADDRESS,
         battery_voltage=[
             ModbusAddressesSpec(holding=[4621], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4360], models=Inv.IVEM),
         ],
         battery_current=[
             ModbusAddressesSpec(holding=[4620], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4361], models=Inv.IVEM),
         ],
         battery_soc=[
             ModbusAddressesSpec(holding=[4624], models=Inv.TREX),
+            ModbusAddressesSpec(holding=[4363], models=Inv.IVEM),
         ],
         battery_soh=[
             ModbusAddressesSpec(holding=[31090], models=Inv.H3_180),
@@ -1036,6 +1349,7 @@ ENTITIES: list[EntityFactory] = sorted(
         _h3_current_voltage_power_entities(),
         _inverter_entities(),
         _bms_entities(),
+        _ivem_entities(),
         _configuration_entities(),
         (description for x in CHARGE_PERIODS for description in x.entity_descriptions),
         REMOTE_CONTROL_DESCRIPTION.entity_descriptions,
