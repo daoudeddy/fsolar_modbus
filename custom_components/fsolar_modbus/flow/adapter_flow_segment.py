@@ -147,7 +147,12 @@ class AdapterFlowSegment:
             port = user_input.get("adapter_port", _DEFAULT_PORT)
             host_and_port = f"{host}:{port}"
             slave = user_input.get("modbus_slave", _DEFAULT_SLAVE)
-            await self._autodetect_modbus_and_save_to_inverter_data(protocol, host_and_port, slave, adapter)
+            await self._autodetect_modbus_and_save_to_inverter_data(
+                protocol=protocol,
+                host=host_and_port,
+                slave=slave,
+                adapter=adapter,
+            )
             return await self._on_complete()
 
         assert adapter is not None
@@ -226,7 +231,13 @@ class AdapterFlowSegment:
             device = user_input["serial_device"]
             slave = user_input.get("modbus_slave", _DEFAULT_SLAVE)
             baudrate = user_input.get("modbus_serial_baud", _DEFAULT_BAUDRATE)
-            await self._autodetect_modbus_and_save_to_inverter_data(SERIAL, device, slave, baudrate, adapter)
+            await self._autodetect_modbus_and_save_to_inverter_data(
+                protocol=SERIAL,
+                host=device,
+                slave=slave,
+                adapter=adapter,
+                baudrate=baudrate,
+            )
             return await self._on_complete()
 
         assert adapter is not None
@@ -266,8 +277,8 @@ class AdapterFlowSegment:
         protocol: str,
         host: str,
         slave: int,
-        baudrate: int,
         adapter: InverterAdapter,
+        baudrate: int | None = None,
     ) -> None:
         """
         Check that connection details are unique, then connect to the inverter and add its details to
@@ -285,6 +296,7 @@ class AdapterFlowSegment:
             if protocol in [TCP, UDP, RTU_OVER_TCP]:
                 params = {"host": host.split(":")[0], "port": int(host.split(":")[1])}
             elif protocol == SERIAL:
+                assert baudrate is not None
                 params = {"port": host, "baudrate": baudrate}
             else:
                 raise AssertionError()
@@ -297,7 +309,7 @@ class AdapterFlowSegment:
             self.inverter_data.inverter_model = full_model
             self.inverter_data.inverter_protocol = protocol
             self.inverter_data.modbus_slave = slave
-            self.inverter_data.modbus_serial_baud = baudrate
+            self.inverter_data.modbus_serial_baud = baudrate if protocol == SERIAL else None
             self.inverter_data.host = host
         except UnsupportedInverterError as ex:
             raise ValidationFailedError(
