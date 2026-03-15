@@ -137,20 +137,20 @@
   },
   {
     "addresses": [
-      4403
+      4405
     ],
-    "key": "bms_cv_voltage",
-    "name": "BMS CV Voltage",
+    "key": "bms_cutoff_voltage",
+    "name": "BMS Cutoff Voltage",
     "scale": 0.1,
     "signed": true,
     "type": "sensor"
   },
   {
     "addresses": [
-      4405
+      4403
     ],
-    "key": "bms_cutoff_voltage",
-    "name": "BMS Cutoff Voltage",
+    "key": "bms_cv_voltage",
+    "name": "BMS CV Voltage",
     "scale": 0.1,
     "signed": true,
     "type": "sensor"
@@ -404,6 +404,28 @@
   },
   {
     "addresses": [
+      4412,
+      4411,
+      4410,
+      4409
+    ],
+    "key": "pv_energy_total",
+    "name": "PV Energy Total",
+    "scale": 0.001,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "key": "pv_power",
+    "name": "PV Power",
+    "sources": [
+      "pv1_power",
+      "pv2_power"
+    ],
+    "type": "lambda"
+  },
+  {
+    "addresses": [
       4393
     ],
     "key": "pv1_current",
@@ -461,28 +483,6 @@
     "scale": 0.1,
     "signed": true,
     "type": "sensor"
-  },
-  {
-    "addresses": [
-      4412,
-      4411,
-      4410,
-      4409
-    ],
-    "key": "pv_energy_total",
-    "name": "PV Energy Total",
-    "scale": 0.001,
-    "signed": false,
-    "type": "sensor"
-  },
-  {
-    "key": "pv_power",
-    "name": "PV Power",
-    "sources": [
-      "pv1_power",
-      "pv2_power"
-    ],
-    "type": "lambda"
   },
   {
     "addresses": [
