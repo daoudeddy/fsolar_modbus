@@ -15,6 +15,7 @@ This means that you're not reliant on FSolar cloud infrastructure, so HA keeps w
 You can also read solar production etc in every 10 seconds, rather than once every 5 minutes.
 
 Depending on your inverter model, you can also set charge periods, work mode, min/max SoC.
+IVEM and AI100 support currently focuses on telemetry plus the generic write-register service; dedicated control entities still need the vendor's writable register map.
 See [Supported Features](https://github.com/comcowo/fsolar_modbus/wiki/Supported-Features).
 
 Supported models:

@@ -728,6 +728,39 @@ def _inverter_entities() -> Iterable[EntityFactory]:
 
 
 def _ivem_entities() -> Iterable[EntityFactory]:
+    yield ModbusSensorDescription(
+        key="battery_voltage",
+        addresses=[ModbusAddressesSpec(holding=[4360], models=Inv.IVEM)],
+        name="Battery Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="V",
+        scale=0.01,
+        round_to=0.01,
+        signed=False,
+        validate=[Min(0)],
+    )
+    yield ModbusSensorDescription(
+        key="battery_current",
+        addresses=[ModbusAddressesSpec(holding=[4361], models=Inv.IVEM)],
+        name="Battery Current",
+        device_class=SensorDeviceClass.CURRENT,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="A",
+        round_to=1,
+        validate=[Range(-200, 200)],
+    )
+    yield ModbusSensorDescription(
+        key="battery_soc",
+        addresses=[ModbusAddressesSpec(holding=[4363], models=Inv.IVEM)],
+        name="Battery SoC",
+        device_class=SensorDeviceClass.BATTERY,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="%",
+        signed=False,
+        validate=[Range(0, 100)],
+    )
+
     def _sensor(
         *,
         key: str,
@@ -1160,15 +1193,12 @@ def _bms_entities() -> Iterable[EntityFactory]:
         bms_connect_state_address=BMS_CONNECT_STATE_ADDRESS,
         battery_voltage=[
             ModbusAddressesSpec(holding=[4621], models=Inv.TREX),
-            ModbusAddressesSpec(holding=[4360], models=Inv.IVEM),
         ],
         battery_current=[
             ModbusAddressesSpec(holding=[4620], models=Inv.TREX),
-            ModbusAddressesSpec(holding=[4361], models=Inv.IVEM),
         ],
         battery_soc=[
             ModbusAddressesSpec(holding=[4624], models=Inv.TREX),
-            ModbusAddressesSpec(holding=[4363], models=Inv.IVEM),
         ],
         battery_soh=[
             ModbusAddressesSpec(holding=[31090], models=Inv.H3_180),

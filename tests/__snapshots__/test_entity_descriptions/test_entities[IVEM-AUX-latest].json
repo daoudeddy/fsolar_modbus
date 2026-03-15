@@ -1,0 +1,569 @@
+[
+  {
+    "addresses": [
+      4377
+    ],
+    "key": "ac_input_frequency",
+    "name": "AC Input Frequency",
+    "scale": 0.01,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4375
+    ],
+    "key": "ac_input_voltage",
+    "name": "AC Input Voltage",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4383
+    ],
+    "key": "ac_output_apparent_power",
+    "name": "AC Output Apparent Power",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4369
+    ],
+    "key": "ac_output_voltage",
+    "name": "AC Output Voltage",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4361
+    ],
+    "key": "battery_current",
+    "name": "Battery Current",
+    "scale": null,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4362
+    ],
+    "key": "battery_power",
+    "name": "Battery Power",
+    "scale": 0.001,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4362
+    ],
+    "key": "battery_power_charge",
+    "name": "Battery Power Charge",
+    "scale": 0.001,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4362
+    ],
+    "key": "battery_power_discharge",
+    "name": "Battery Power Discharge",
+    "scale": 0.001,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4363
+    ],
+    "key": "battery_soc",
+    "name": "Battery SoC",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4387
+    ],
+    "key": "battery_temperature",
+    "name": "Battery Temperature",
+    "scale": null,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4360
+    ],
+    "key": "battery_voltage",
+    "name": "Battery Voltage",
+    "scale": 0.01,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4400
+    ],
+    "key": "bms_charge_stopped",
+    "name": "BMS Charge Stopped",
+    "type": "binary-sensor"
+  },
+  {
+    "addresses": [
+      4400
+    ],
+    "key": "bms_communication_connected",
+    "name": "BMS Communication Connected",
+    "type": "binary-sensor"
+  },
+  {
+    "addresses": [
+      4401
+    ],
+    "key": "bms_connect_count",
+    "name": "BMS Connect Count",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4403
+    ],
+    "key": "bms_cv_voltage",
+    "name": "BMS CV Voltage",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4405
+    ],
+    "key": "bms_cutoff_voltage",
+    "name": "BMS Cutoff Voltage",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4400
+    ],
+    "key": "bms_discharge_stopped",
+    "name": "BMS Discharge Stopped",
+    "type": "binary-sensor"
+  },
+  {
+    "addresses": [
+      4408
+    ],
+    "key": "bms_fault_code",
+    "name": "BMS Fault Code",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4400
+    ],
+    "key": "bms_flags",
+    "name": "BMS Flags",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4404
+    ],
+    "key": "bms_float_voltage",
+    "name": "BMS Float Voltage",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4400
+    ],
+    "key": "bms_forced_charge",
+    "name": "BMS Forced Charge",
+    "type": "binary-sensor"
+  },
+  {
+    "addresses": [
+      4406
+    ],
+    "key": "bms_max_charge_current",
+    "name": "BMS Max Charge Current",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4407
+    ],
+    "key": "bms_max_discharge_current",
+    "name": "BMS Max Discharge Current",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4402
+    ],
+    "key": "bms_soc",
+    "name": "BMS SoC",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4400
+    ],
+    "key": "bms_version_mismatch",
+    "name": "BMS Version Mismatch",
+    "type": "binary-sensor"
+  },
+  {
+    "addresses": [
+      4388
+    ],
+    "key": "bus_voltage",
+    "name": "Bus Voltage",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4500
+    ],
+    "key": "eq_stage",
+    "name": "EQ Stage",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4454
+    ],
+    "key": "generator_current",
+    "name": "Generator Current",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4455
+    ],
+    "key": "generator_frequency",
+    "name": "Generator Frequency",
+    "scale": 0.01,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4456
+    ],
+    "key": "generator_power",
+    "name": "Generator Power",
+    "scale": 0.001,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4453
+    ],
+    "key": "generator_voltage",
+    "name": "Generator Voltage",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4368
+    ],
+    "key": "inverter_apparent_power",
+    "name": "Inverter Apparent Power",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4365
+    ],
+    "key": "inverter_current",
+    "name": "Inverter Current",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4355
+    ],
+    "key": "inverter_fault_code",
+    "name": "Inverter Fault Code",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4366
+    ],
+    "key": "inverter_frequency",
+    "name": "Inverter Frequency",
+    "scale": 0.01,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4367
+    ],
+    "key": "inverter_power",
+    "name": "Inverter Power",
+    "scale": 0.001,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4386
+    ],
+    "key": "inverter_temperature",
+    "name": "Inverter Temperature",
+    "scale": null,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4364
+    ],
+    "key": "inverter_voltage",
+    "name": "Inverter Voltage",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4428,
+      4427,
+      4426,
+      4425
+    ],
+    "key": "load_energy_total",
+    "name": "Load Energy Total",
+    "scale": 0.001,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4384
+    ],
+    "key": "load_percentage",
+    "name": "Load Percentage",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4382
+    ],
+    "key": "load_power",
+    "name": "Load Power",
+    "scale": 0.001,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4393
+    ],
+    "key": "pv1_current",
+    "name": "PV1 Current",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4394
+    ],
+    "key": "pv1_power",
+    "name": "PV1 Power",
+    "scale": 0.001,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4390
+    ],
+    "key": "pv1_voltage",
+    "name": "PV1 Voltage",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4442
+    ],
+    "key": "pv2_current",
+    "name": "PV2 Current",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4443
+    ],
+    "key": "pv2_power",
+    "name": "PV2 Power",
+    "scale": 0.001,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4441
+    ],
+    "key": "pv2_voltage",
+    "name": "PV2 Voltage",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4412,
+      4411,
+      4410,
+      4409
+    ],
+    "key": "pv_energy_total",
+    "name": "PV Energy Total",
+    "scale": 0.001,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "key": "pv_power",
+    "name": "PV Power",
+    "sources": [
+      "pv1_power",
+      "pv2_power"
+    ],
+    "type": "lambda"
+  },
+  {
+    "addresses": [
+      4396
+    ],
+    "key": "scc_charge_mode",
+    "name": "SCC Charge Mode",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4395
+    ],
+    "key": "scc_temperature",
+    "name": "SCC Temperature",
+    "scale": null,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4458
+    ],
+    "key": "smart_load_current",
+    "name": "Smart Load Current",
+    "scale": 0.1,
+    "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4459
+    ],
+    "key": "smart_load_frequency",
+    "name": "Smart Load Frequency",
+    "scale": 0.01,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4460
+    ],
+    "key": "smart_load_power",
+    "name": "Smart Load Power",
+    "scale": 0.001,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4457
+    ],
+    "key": "smart_load_voltage",
+    "name": "Smart Load Voltage",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4461
+    ],
+    "key": "smart_port_status",
+    "name": "Smart Port Status",
+    "states": [
+      "Generator Input",
+      "Smart Load Output"
+    ],
+    "type": "inverter-state-sensor"
+  },
+  {
+    "addresses": [
+      4385
+    ],
+    "key": "transformer_temperature",
+    "name": "Transformer Temperature",
+    "scale": null,
+    "signed": true,
+    "type": "sensor"
+  }
+]

@@ -102,3 +102,94 @@ def test_entities(
     entities.sort(key=lambda x: x.get("key", ""))
 
     assert entities == snapshot_json
+
+
+def test_ivem_entities_use_documented_registers_and_scales() -> None:
+    connection_type_profile = INVERTER_PROFILES[InverterModel.IVEM].connection_types[ConnectionType.AUX]
+    inv = connection_type_profile.get_inv_for_version(None)
+
+    serialized_by_key = {}
+    for entity_factory in ENTITIES:
+        serialized = entity_factory.serialize(inv, connection_type_profile.register_type)
+        if serialized is not None:
+            serialized_by_key[serialized["key"]] = serialized
+
+    assert serialized_by_key["battery_voltage"] == {
+        "type": "sensor",
+        "key": "battery_voltage",
+        "name": "Battery Voltage",
+        "addresses": [4360],
+        "scale": 0.01,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_current"] == {
+        "type": "sensor",
+        "key": "battery_current",
+        "name": "Battery Current",
+        "addresses": [4361],
+        "scale": None,
+        "signed": True,
+    }
+    assert serialized_by_key["battery_soc"] == {
+        "type": "sensor",
+        "key": "battery_soc",
+        "name": "Battery SoC",
+        "addresses": [4363],
+        "scale": None,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_power"] == {
+        "type": "sensor",
+        "key": "battery_power",
+        "name": "Battery Power",
+        "addresses": [4362],
+        "scale": 0.001,
+        "signed": True,
+    }
+    assert serialized_by_key["battery_power_charge"] == {
+        "type": "sensor",
+        "key": "battery_power_charge",
+        "name": "Battery Power Charge",
+        "addresses": [4362],
+        "scale": 0.001,
+        "signed": True,
+    }
+    assert serialized_by_key["battery_power_discharge"] == {
+        "type": "sensor",
+        "key": "battery_power_discharge",
+        "name": "Battery Power Discharge",
+        "addresses": [4362],
+        "scale": 0.001,
+        "signed": True,
+    }
+    assert serialized_by_key["pv1_voltage"] == {
+        "type": "sensor",
+        "key": "pv1_voltage",
+        "name": "PV1 Voltage",
+        "addresses": [4390],
+        "scale": 0.1,
+        "signed": True,
+    }
+    assert serialized_by_key["pv_energy_total"] == {
+        "type": "sensor",
+        "key": "pv_energy_total",
+        "name": "PV Energy Total",
+        "addresses": [4412, 4411, 4410, 4409],
+        "scale": 0.001,
+        "signed": False,
+    }
+    assert serialized_by_key["load_energy_total"] == {
+        "type": "sensor",
+        "key": "load_energy_total",
+        "name": "Load Energy Total",
+        "addresses": [4428, 4427, 4426, 4425],
+        "scale": 0.001,
+        "signed": False,
+    }
+    assert serialized_by_key["smart_port_status"] == {
+        "type": "inverter-state-sensor",
+        "key": "smart_port_status",
+        "name": "Smart Port Status",
+        "addresses": [4461],
+        "states": ["Generator Input", "Smart Load Output"],
+    }

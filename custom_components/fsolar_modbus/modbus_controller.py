@@ -666,7 +666,7 @@ class ModbusController(EntityController, UnloadController):
             elif register_values[0] == 0x51:
                 power_val = register_values[1] & 0x00FF
                 # battery voltage is calculated by multiplying the 8 bit high with 12V
-                voltage_val = register_values[1] >> 8 * 12
+                voltage_val = (register_values[1] >> 8) * 12
                 full_model = "T-REX-"
                 if power_val == 0x08:
                     full_model += "5"
