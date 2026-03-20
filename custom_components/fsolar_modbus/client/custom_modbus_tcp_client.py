@@ -1,4 +1,5 @@
 import logging
+import math
 import select
 import socket
 import time
@@ -9,6 +10,11 @@ from ..vendor.pymodbus import ConnectionException
 from ..vendor.pymodbus import ModbusTcpClient
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _remaining_poll_timeout_ms(end: float, now: float) -> int:
+    """Convert remaining timeout seconds to poll's millisecond units."""
+    return max(0, math.ceil((end - now) * 1000))
 
 
 class CustomModbusTcpClient(ModbusTcpClient):
@@ -69,7 +75,7 @@ class CustomModbusTcpClient(ModbusTcpClient):
         # fail
         poll.register(self.socket, select.POLLIN)
         while recv_size > 0:
-            poll_res = poll.poll(end - time_)
+            poll_res = poll.poll(_remaining_poll_timeout_ms(end, time_))
             # We expect a single-element list if this succeeds, or an empty list if it timed out
             if len(poll_res) > 0:
                 if (recv_data := self.socket.recv(recv_size)) == b"":
@@ -101,7 +107,7 @@ class CustomModbusTcpClient(ModbusTcpClient):
         assert self.socket is not None
         poll = select.poll()
         poll.register(self.socket, select.POLLIN)
-        poll_res = poll.poll(end - time_)
+        poll_res = poll.poll(_remaining_poll_timeout_ms(end, time_))
         if len(poll_res) > 0:
             data = self.socket.recv(1024)
         return data

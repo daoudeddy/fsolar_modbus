@@ -161,23 +161,32 @@ class ModbusClient:
     async def write_registers(self, register_address: int, register_values: list[int], slave: int) -> None:
         """Write registers"""
         expected_response_type: Type[Any]
-        if len(register_values) > 1:
-            register_values = [int(i) for i in register_values]
-            response = await self._async_pymodbus_call(
-                self._client.write_registers,
-                register_address,
-                register_values,
-                slave,
-            )
-            expected_response_type = WriteMultipleRegistersResponse
-        else:
-            response = await self._async_pymodbus_call(
-                self._client.write_register,
-                register_address,
-                int(register_values[0]),
-                slave,
-            )
-            expected_response_type = WriteSingleRegisterResponse
+        transaction = getattr(self._client, "transaction", None)
+        old_retry_on_empty = getattr(transaction, "retry_on_empty", None)
+        if old_retry_on_empty is not None:
+            transaction.retry_on_empty = False
+
+        try:
+            if len(register_values) > 1:
+                register_values = [int(i) for i in register_values]
+                response = await self._async_pymodbus_call(
+                    self._client.write_registers,
+                    register_address,
+                    register_values,
+                    slave,
+                )
+                expected_response_type = WriteMultipleRegistersResponse
+            else:
+                response = await self._async_pymodbus_call(
+                    self._client.write_register,
+                    register_address,
+                    int(register_values[0]),
+                    slave,
+                )
+                expected_response_type = WriteSingleRegisterResponse
+        finally:
+            if old_retry_on_empty is not None:
+                transaction.retry_on_empty = old_retry_on_empty
 
         if response.isError():
             message = f"Error writing registers. Start: {register_address}; values: {register_values}; slave: {slave}"

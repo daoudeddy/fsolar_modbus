@@ -1,5 +1,6 @@
 """Modbus controller."""
 
+import asyncio
 import logging
 import re
 import threading
@@ -40,6 +41,7 @@ from .remote_control_manager import RemoteControlManager
 from .vendor.pymodbus import ConnectionException
 from .vendor.pymodbus import ExceptionResponse
 from .vendor.pymodbus import ModbusExceptions
+from .vendor.pymodbus import ModbusIOException
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -74,6 +76,17 @@ _INT16_MIN = -32768
 _UINT16_MAX = 65535
 
 _INVERTER_WRITE_DELAY_SECS = 5
+_WRITE_CONFIRM_DELAY_SECS = 0.2
+_WRITE_CONFIRM_ATTEMPTS = 3
+
+
+def _is_no_response_write_error(ex: ModbusClientFailedError) -> bool:
+    response = ex.response
+    if not isinstance(response, ModbusIOException):
+        return False
+
+    text = str(response).lower()
+    return "no response received" in text or "0 received" in text
 
 
 @dataclass
@@ -274,32 +287,67 @@ class ModbusController(EntityController, UnloadController):
             values,
         )
         try:
-            for i, value in enumerate(values):
+            normalized_values = []
+            for value in values:
                 value = int(value)  # Ensure that we've been given an int
                 if not (_INT16_MIN <= value <= _UINT16_MAX):
                     raise ValueError(f"Value {value} must be between {_INT16_MIN} and {_UINT16_MAX}")
                 # pymodbus doesn't like negative values
                 if value < 0:
                     value = _UINT16_MAX + value + 1
-                values[i] = value
+                normalized_values.append(value)
 
-            await self._client.write_registers(start_address, values, self._slave)
+            try:
+                await self._client.write_registers(start_address, normalized_values, self._slave)
+            except ModbusClientFailedError as ex:
+                if not _is_no_response_write_error(ex) or not await self._confirm_write_succeeded(
+                    start_address, normalized_values
+                ):
+                    raise
+                _LOGGER.warning(
+                    "Write to %s %s succeeded without a Modbus reply; accepting read-back confirmation",
+                    self._client,
+                    self._slave,
+                )
 
-            changed_addresses = set()
-            for i, value in enumerate(values):
-                address = start_address + i
-                # Only store the result of the write if it's a register we care about ourselves
-                register_value = self._data.get(address)
-                if register_value is not None:
-                    register_value.written_value = value
-                    register_value.written_at = time.monotonic()
-                    changed_addresses.add(address)
-            if len(changed_addresses) > 0:
-                self._notify_update(changed_addresses)
+            self._record_write_success(start_address, normalized_values)
         except Exception as ex:
             # Failed writes are always bad
             _LOGGER.exception("Failed to write registers")
             raise ex
+
+    async def _confirm_write_succeeded(self, start_address: int, values: list[int]) -> bool:
+        for attempt in range(_WRITE_CONFIRM_ATTEMPTS):
+            if attempt > 0:
+                await asyncio.sleep(_WRITE_CONFIRM_DELAY_SECS)
+
+            try:
+                read_values = await self._client.read_registers(
+                    start_address,
+                    len(values),
+                    RegisterType.HOLDING,
+                    self._slave,
+                )
+            except ModbusClientFailedError:
+                continue
+
+            if read_values == values:
+                return True
+
+        return False
+
+    def _record_write_success(self, start_address: int, values: list[int]) -> None:
+        changed_addresses = set()
+        for i, value in enumerate(values):
+            address = start_address + i
+            # Only store the result of the write if it's a register we care about ourselves
+            register_value = self._data.get(address)
+            if register_value is not None:
+                register_value.written_value = value
+                register_value.written_at = time.monotonic()
+                changed_addresses.add(address)
+        if len(changed_addresses) > 0:
+            self._notify_update(changed_addresses)
 
     async def _refresh(self, _time: datetime) -> None:
         """Refresh modbus data"""

@@ -36,6 +36,7 @@ class ModbusSensorDescription(SensorEntityDescription, EntityFactory):  # type: 
 
     addresses: list[ModbusAddressesSpec]
     scale: float | None = None
+    suggested_display_precision: int | None = None
     round_to: float | None = None
     post_process: Callable[[float], float] | None = None
     validate: list[BaseValidator] = field(default_factory=list)
@@ -88,6 +89,7 @@ class ModbusSensor(ModbusEntityMixin, SensorEntity):
         self.entity_description = entity_description
         self._addresses = addresses
         self._round_to = round_to
+        self._attr_suggested_display_precision = entity_description.suggested_display_precision
         self._moving_average_filter: deque[float] | None = deque(maxlen=6) if round_to is not None else None
         self.entity_id = self._get_entity_id(Platform.SENSOR)
 

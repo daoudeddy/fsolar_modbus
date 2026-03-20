@@ -31,6 +31,18 @@
   },
   {
     "addresses": [
+      8489
+    ],
+    "key": "ac_output_frequency",
+    "name": "AC Output Frequency",
+    "type": "select",
+    "values": {
+      "0": "50Hz",
+      "1": "60Hz"
+    }
+  },
+  {
+    "addresses": [
       4369
     ],
     "key": "ac_output_voltage",
@@ -41,12 +53,127 @@
   },
   {
     "addresses": [
-      4361
+      8491
+    ],
+    "key": "application_mode",
+    "name": "Application Mode",
+    "type": "select",
+    "values": {
+      "0": "APL",
+      "1": "UPS"
+    }
+  },
+  {
+    "addresses": [
+      8534
+    ],
+    "key": "battery_back_to_charge_voltage",
+    "name": "Battery Back To Charge Voltage",
+    "scale": 0.1,
+    "type": "number"
+  },
+  {
+    "addresses": [
+      8537
+    ],
+    "key": "battery_back_to_discharge_voltage",
+    "name": "Battery Back To Discharge Voltage",
+    "scale": 0.1,
+    "type": "number"
+  },
+  {
+    "addresses": [
+      4609
+    ],
+    "key": "battery_charge_discharge_limit_voltage",
+    "name": "Battery Charge/Discharge Limit Voltage",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4620
     ],
     "key": "battery_current",
     "name": "Battery Current",
-    "scale": null,
+    "scale": 0.1,
     "signed": true,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      8479
+    ],
+    "key": "battery_cutoff_voltage",
+    "name": "Battery Cut-Off Voltage",
+    "scale": 0.1,
+    "type": "number"
+  },
+  {
+    "addresses": [
+      8482
+    ],
+    "key": "battery_cv_voltage",
+    "name": "Battery C.V. Charging Voltage",
+    "scale": 0.1,
+    "type": "number"
+  },
+  {
+    "addresses": [
+      8483
+    ],
+    "key": "battery_float_voltage",
+    "name": "Battery Floating Charging Voltage",
+    "scale": 0.1,
+    "type": "number"
+  },
+  {
+    "addresses": [
+      4608
+    ],
+    "key": "battery_line_voltage",
+    "name": "Battery Line Voltage",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      8496
+    ],
+    "key": "battery_max_ac_charge_current",
+    "name": "Battery Max AC Charge Current",
+    "scale": 1,
+    "type": "number"
+  },
+  {
+    "addresses": [
+      8494
+    ],
+    "key": "battery_max_charge_current",
+    "name": "Battery Max Charge Current",
+    "scale": 1,
+    "type": "number"
+  },
+  {
+    "addresses": [
+      4610
+    ],
+    "key": "battery_max_charge_current_limit",
+    "name": "Battery Max Charge Current Limit",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4611
+    ],
+    "key": "battery_max_discharge_current_limit",
+    "name": "Battery Max Discharge Current Limit",
+    "scale": 0.1,
+    "signed": false,
     "type": "sensor"
   },
   {
@@ -55,7 +182,7 @@
     ],
     "key": "battery_power",
     "name": "Battery Power",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": true,
     "type": "sensor"
   },
@@ -65,7 +192,7 @@
     ],
     "key": "battery_power_charge",
     "name": "Battery Power Charge",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": true,
     "type": "sensor"
   },
@@ -75,16 +202,46 @@
     ],
     "key": "battery_power_discharge",
     "name": "Battery Power Discharge",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": true,
     "type": "sensor"
   },
   {
     "addresses": [
-      4363
+      4624
     ],
     "key": "battery_soc",
     "name": "Battery SoC",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4625
+    ],
+    "key": "battery_soh",
+    "name": "Battery SoH",
+    "scale": 0.1,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4612
+    ],
+    "key": "battery_system_fault_code",
+    "name": "Battery System Fault Code",
+    "scale": null,
+    "signed": false,
+    "type": "sensor"
+  },
+  {
+    "addresses": [
+      4613
+    ],
+    "key": "battery_system_status_state",
+    "name": "Battery System Status State",
     "scale": null,
     "signed": false,
     "type": "sensor"
@@ -101,7 +258,21 @@
   },
   {
     "addresses": [
-      4360
+      8493
+    ],
+    "key": "battery_type",
+    "name": "Battery Type",
+    "type": "select",
+    "values": {
+      "0": "AGM",
+      "1": "Flood",
+      "2": "User Defined",
+      "3": "LiFePO4"
+    }
+  },
+  {
+    "addresses": [
+      4621
     ],
     "key": "battery_voltage",
     "name": "Battery Voltage",
@@ -251,6 +422,31 @@
   },
   {
     "addresses": [
+      8497
+    ],
+    "key": "buzzer",
+    "name": "Buzzer",
+    "type": "select",
+    "values": {
+      "0": "Disable",
+      "1": "Enable"
+    }
+  },
+  {
+    "addresses": [
+      8492
+    ],
+    "key": "charging_source_priority",
+    "name": "Charging Source Priority",
+    "type": "select",
+    "values": {
+      "1": "Solar First",
+      "2": "Solar and Utility First",
+      "3": "Solar Only"
+    }
+  },
+  {
+    "addresses": [
       4500
     ],
     "key": "eq_stage",
@@ -285,7 +481,7 @@
     ],
     "key": "generator_power",
     "name": "Generator Power",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": false,
     "type": "sensor"
   },
@@ -345,7 +541,7 @@
     ],
     "key": "inverter_power",
     "name": "Inverter Power",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": true,
     "type": "sensor"
   },
@@ -368,6 +564,18 @@
     "scale": 0.1,
     "signed": false,
     "type": "sensor"
+  },
+  {
+    "addresses": [
+      8501
+    ],
+    "key": "lcd_backlight",
+    "name": "LCD Backlight",
+    "type": "select",
+    "values": {
+      "0": "Disable",
+      "1": "Enable"
+    }
   },
   {
     "addresses": [
@@ -398,9 +606,58 @@
     ],
     "key": "load_power",
     "name": "Load Power",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": true,
     "type": "sensor"
+  },
+  {
+    "addresses": [
+      8490
+    ],
+    "key": "output_source_priority",
+    "name": "Output Source Priority",
+    "type": "select",
+    "values": {
+      "0": "Utility First",
+      "1": "Solar First",
+      "2": "Solar Battery Utility"
+    }
+  },
+  {
+    "addresses": [
+      8500
+    ],
+    "key": "over_temperature_restart",
+    "name": "Over Temperature Restart",
+    "type": "select",
+    "values": {
+      "0": "Disable",
+      "1": "Enable"
+    }
+  },
+  {
+    "addresses": [
+      8499
+    ],
+    "key": "overload_restart",
+    "name": "Overload Restart",
+    "type": "select",
+    "values": {
+      "0": "Disable",
+      "1": "Enable"
+    }
+  },
+  {
+    "addresses": [
+      8503
+    ],
+    "key": "overload_to_bypass",
+    "name": "Overload To Bypass",
+    "type": "select",
+    "values": {
+      "0": "Disable",
+      "1": "Enable"
+    }
   },
   {
     "addresses": [
@@ -440,7 +697,7 @@
     ],
     "key": "pv1_power",
     "name": "PV1 Power",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": true,
     "type": "sensor"
   },
@@ -470,7 +727,7 @@
     ],
     "key": "pv2_power",
     "name": "PV2 Power",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": true,
     "type": "sensor"
   },
@@ -530,7 +787,7 @@
     ],
     "key": "smart_load_power",
     "name": "Smart Load Power",
-    "scale": 0.001,
+    "scale": 1.0,
     "signed": false,
     "type": "sensor"
   },

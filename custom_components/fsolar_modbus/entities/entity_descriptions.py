@@ -26,6 +26,7 @@ from .modbus_inverter_state_sensor import ModbusG2InverterStateSensorDescription
 from .modbus_inverter_state_sensor import ModbusInverterStateSensorDescription
 from .modbus_lambda_sensor import ModbusLambdaSensorDescription
 from .modbus_number import ModbusNumberDescription
+from .modbus_select import ModbusSelectDescription
 from .modbus_sensor import ModbusSensorDescription
 from .modbus_version_sensor import ModbusVersionSensorDescription
 from .modbus_work_mode_select import ModbusWorkModeSelectDescription
@@ -45,6 +46,11 @@ IVEM_SMART_PORT_STATES = [
     "Generator Input",
     "Smart Load Output",
 ]
+
+POWER_SENSOR_UNIT = "W"
+POWER_SENSOR_SCALE = 1.0
+POWER_SENSOR_ROUND_TO = 10
+POWER_SENSOR_MAX = 100_000
 
 
 def _version_entities() -> Iterable[EntityFactory]:
@@ -137,10 +143,10 @@ def _pv_entities() -> Iterable[EntityFactory]:
             name=name,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:solar-power-variant-outline",
-            scale=0.001,
-            round_to=0.01,
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
             # This can go negative if no panels are attached
             post_process=lambda x: max(x, 0),
         )
@@ -211,7 +217,7 @@ def _pv_entities() -> Iterable[EntityFactory]:
         name="PV Power",
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement="kW",
+        native_unit_of_measurement=POWER_SENSOR_UNIT,
         icon="mdi:solar-power-variant-outline",
     )
 
@@ -280,7 +286,7 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
         scale=0.1,
     )
 
-    def _inverter_power(phase: str | None, addresses: list[ModbusAddressesSpec], scale: float) -> EntityFactory:
+    def _inverter_power(phase: str | None, addresses: list[ModbusAddressesSpec]) -> EntityFactory:
         key_suffix = f"_{phase}" if phase is not None else ""
         name_suffix = f" {phase}" if phase is not None else ""
         return ModbusSensorDescription(
@@ -289,10 +295,10 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
             name=f"Inverter Power{name_suffix}",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
-            scale=scale,
-            round_to=0.01,
-            validate=[Range(-100, 100)],
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
+            validate=[Range(-POWER_SENSOR_MAX, POWER_SENSOR_MAX)],
         )
 
     yield _inverter_power(
@@ -300,21 +306,18 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
         addresses=[
             ModbusAddressesSpec(holding=[4364], models=Inv.TREX),
         ],
-        scale=0.001,
     )
     yield _inverter_power(
         "S",
         addresses=[
             ModbusAddressesSpec(holding=[4387], models=Inv.TREX),
         ],
-        scale=0.001,
     )
     yield _inverter_power(
         "T",
         addresses=[
             ModbusAddressesSpec(holding=[4391], models=Inv.TREX),
         ],
-        scale=0.001,
     )
 
     def _backup_volt(phase: str, addresses: list[ModbusAddressesSpec]) -> EntityFactory:
@@ -368,18 +371,18 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
             entity_registry_enabled_default=False,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:power-socket",
-            scale=0.001,
-            round_to=0.01,
-            validate=[Range(-100, 100)],
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
+            validate=[Range(-POWER_SENSOR_MAX, POWER_SENSOR_MAX)],
         )
 
     yield _backup_power("R", addresses=[ModbusAddressesSpec(holding=[4531], models=Inv.TREX)])
     yield _backup_power("S", addresses=[ModbusAddressesSpec(holding=[4548], models=Inv.TREX)])
     yield _backup_power("T", addresses=[ModbusAddressesSpec(holding=[4552], models=Inv.TREX)])
 
-    def _grid_power(phase: str | None, scale: float, addresses: list[ModbusAddressesSpec]) -> Iterable[EntityFactory]:
+    def _grid_power(phase: str | None, addresses: list[ModbusAddressesSpec]) -> Iterable[EntityFactory]:
         key_suffix = f"_{phase}" if phase is not None else ""
         name_suffix = f" {phase}" if phase is not None else ""
 
@@ -389,11 +392,11 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
             name=f"Grid Power{name_suffix}",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:transmission-tower",
-            scale=scale,
-            round_to=0.01,
-            validate=[Range(-100, 100)],
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
+            validate=[Range(-POWER_SENSOR_MAX, POWER_SENSOR_MAX)],
         )
         yield ModbusSensorDescription(
             key=f"grid_power_export{key_suffix}",
@@ -401,12 +404,12 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
             name=f"Grid Power Export{name_suffix}",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:transmission-tower-import",
-            scale=scale,
-            round_to=0.01,
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
             post_process=lambda v: abs(v) if v < 0 else 0,
-            validate=[Range(0, 100)],
+            validate=[Range(0, POWER_SENSOR_MAX)],
         )
         yield ModbusSensorDescription(
             key=f"grid_power_import{key_suffix}",
@@ -414,17 +417,16 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
             name=f"Grid Power Import{name_suffix}",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:transmission-tower-export",
-            scale=scale,
-            round_to=0.01,
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
             post_process=lambda v: v if v > 0 else 0,
-            validate=[Range(0, 100)],
+            validate=[Range(0, POWER_SENSOR_MAX)],
         )
 
     yield from _grid_power(
         phase=None,
-        scale=0.001,
         addresses=[
             ModbusAddressesSpec(holding=[4502, 4501], models=Inv.TREX),
         ],
@@ -439,11 +441,11 @@ def _h3_current_voltage_power_entities() -> Iterable[EntityFactory]:
             name=f"Load Power{name_suffix}",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:home-lightning-bolt-outline",
-            scale=0.001,
-            round_to=0.01,
-            validate=[Range(-100, 100)],
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
+            validate=[Range(-POWER_SENSOR_MAX, POWER_SENSOR_MAX)],
         )
 
     yield _load_power(phase=None, addresses=[ModbusAddressesSpec(holding=[4504, 4503], models=Inv.TREX)])
@@ -460,10 +462,10 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             name=f"Battery{name_infix} Power",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
-            scale=0.001,
-            round_to=0.01,
-            validate=[Range(-100, 100)],
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
+            validate=[Range(-POWER_SENSOR_MAX, POWER_SENSOR_MAX)],
         )
         yield ModbusSensorDescription(
             key=f"battery_power_discharge{key_suffix}",
@@ -471,12 +473,12 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             name=f"Battery{name_infix} Power Discharge",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:battery-arrow-down-outline",
-            scale=0.001,
-            round_to=0.01,
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
             post_process=lambda v: abs(v) if v < 0 else 0,
-            validate=[Range(0, 100)],
+            validate=[Range(0, POWER_SENSOR_MAX)],
         )
         yield ModbusSensorDescription(
             key=f"battery_power_charge{key_suffix}",
@@ -484,12 +486,12 @@ def _inverter_entities() -> Iterable[EntityFactory]:
             name=f"Battery{name_infix} Power Charge",
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            native_unit_of_measurement="kW",
+            native_unit_of_measurement=POWER_SENSOR_UNIT,
             icon="mdi:battery-arrow-up-outline",
-            scale=0.001,
-            round_to=0.01,
+            scale=POWER_SENSOR_SCALE,
+            round_to=POWER_SENSOR_ROUND_TO,
             post_process=lambda v: v if v > 0 else 0,
-            validate=[Range(0, 100)],
+            validate=[Range(0, POWER_SENSOR_MAX)],
         )
 
     yield from _battery_power(
@@ -730,33 +732,37 @@ def _inverter_entities() -> Iterable[EntityFactory]:
 def _ivem_entities() -> Iterable[EntityFactory]:
     yield ModbusSensorDescription(
         key="battery_voltage",
-        addresses=[ModbusAddressesSpec(holding=[4360], models=Inv.IVEM)],
+        addresses=[ModbusAddressesSpec(holding=[4621], models=Inv.IVEM)],
         name="Battery Voltage",
         device_class=SensorDeviceClass.VOLTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="V",
         scale=0.01,
+        suggested_display_precision=2,
         round_to=0.01,
         signed=False,
         validate=[Min(0)],
     )
     yield ModbusSensorDescription(
         key="battery_current",
-        addresses=[ModbusAddressesSpec(holding=[4361], models=Inv.IVEM)],
+        addresses=[ModbusAddressesSpec(holding=[4620], models=Inv.IVEM)],
         name="Battery Current",
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="A",
+        scale=0.1,
         round_to=1,
         validate=[Range(-200, 200)],
     )
     yield ModbusSensorDescription(
         key="battery_soc",
-        addresses=[ModbusAddressesSpec(holding=[4363], models=Inv.IVEM)],
+        addresses=[ModbusAddressesSpec(holding=[4624], models=Inv.IVEM)],
         name="Battery SoC",
         device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="%",
+        scale=0.1,
+        round_to=1,
         signed=False,
         validate=[Range(0, 100)],
     )
@@ -772,6 +778,7 @@ def _ivem_entities() -> Iterable[EntityFactory]:
         scale: float | None = None,
         signed: bool = True,
         icon: str | None = None,
+        suggested_display_precision: int | None = None,
         round_to: float | None = None,
         validate: list[Range | Min] | None = None,
     ) -> EntityFactory:
@@ -783,6 +790,7 @@ def _ivem_entities() -> Iterable[EntityFactory]:
             state_class=state_class,
             native_unit_of_measurement=native_unit_of_measurement,
             scale=scale,
+            suggested_display_precision=suggested_display_precision,
             round_to=round_to,
             signed=signed,
             icon=icon,
@@ -821,8 +829,8 @@ def _ivem_entities() -> Iterable[EntityFactory]:
         address=4367,
         name="Inverter Power",
         device_class=SensorDeviceClass.POWER,
-        native_unit_of_measurement="kW",
-        scale=0.001,
+        native_unit_of_measurement=POWER_SENSOR_UNIT,
+        scale=POWER_SENSOR_SCALE,
         icon="mdi:flash",
     )
     yield _sensor(
@@ -928,6 +936,7 @@ def _ivem_entities() -> Iterable[EntityFactory]:
         device_class=SensorDeviceClass.VOLTAGE,
         native_unit_of_measurement="V",
         scale=0.1,
+        suggested_display_precision=1,
     )
     yield _sensor(
         key="bms_float_voltage",
@@ -936,6 +945,7 @@ def _ivem_entities() -> Iterable[EntityFactory]:
         device_class=SensorDeviceClass.VOLTAGE,
         native_unit_of_measurement="V",
         scale=0.1,
+        suggested_display_precision=1,
     )
     yield _sensor(
         key="bms_cutoff_voltage",
@@ -944,6 +954,7 @@ def _ivem_entities() -> Iterable[EntityFactory]:
         device_class=SensorDeviceClass.VOLTAGE,
         native_unit_of_measurement="V",
         scale=0.1,
+        suggested_display_precision=1,
     )
     yield _sensor(
         key="bms_max_charge_current",
@@ -991,8 +1002,8 @@ def _ivem_entities() -> Iterable[EntityFactory]:
         address=4456,
         name="Generator Power",
         device_class=SensorDeviceClass.POWER,
-        native_unit_of_measurement="kW",
-        scale=0.001,
+        native_unit_of_measurement=POWER_SENSOR_UNIT,
+        scale=POWER_SENSOR_SCALE,
         signed=False,
     )
     yield _sensor(
@@ -1026,8 +1037,8 @@ def _ivem_entities() -> Iterable[EntityFactory]:
         address=4460,
         name="Smart Load Power",
         device_class=SensorDeviceClass.POWER,
-        native_unit_of_measurement="kW",
-        scale=0.001,
+        native_unit_of_measurement=POWER_SENSOR_UNIT,
+        scale=POWER_SENSOR_SCALE,
         signed=False,
     )
     yield ModbusInverterStateSensorDescription(
@@ -1052,6 +1063,103 @@ def _ivem_entities() -> Iterable[EntityFactory]:
             mask=bit,
             icon_func=None,
         )
+
+
+def _ivem_battery_entities() -> Iterable[EntityFactory]:
+    def _sensor(
+        *,
+        key: str,
+        address: int,
+        name: str,
+        device_class: SensorDeviceClass | None = None,
+        native_unit_of_measurement: str | None = None,
+        scale: float | None = None,
+        signed: bool = False,
+        suggested_display_precision: int | None = None,
+        round_to: float | None = None,
+        validate: list[Range | Min] | None = None,
+    ) -> EntityFactory:
+        return ModbusSensorDescription(
+            key=key,
+            addresses=[ModbusAddressesSpec(holding=[address], models=Inv.IVEM)],
+            name=name,
+            device_class=device_class,
+            state_class=SensorStateClass.MEASUREMENT,
+            native_unit_of_measurement=native_unit_of_measurement,
+            scale=scale,
+            signed=signed,
+            suggested_display_precision=suggested_display_precision,
+            round_to=round_to,
+            validate=[] if validate is None else validate,
+        )
+
+    yield _sensor(
+        key="battery_line_voltage",
+        address=4608,
+        name="Battery Line Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+        suggested_display_precision=1,
+        round_to=0.1,
+        validate=[Min(0)],
+    )
+    yield _sensor(
+        key="battery_charge_discharge_limit_voltage",
+        address=4609,
+        name="Battery Charge/Discharge Limit Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement="V",
+        scale=0.1,
+        suggested_display_precision=1,
+        round_to=0.1,
+        validate=[Min(0)],
+    )
+    yield _sensor(
+        key="battery_max_charge_current_limit",
+        address=4610,
+        name="Battery Max Charge Current Limit",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement="A",
+        scale=0.1,
+        suggested_display_precision=1,
+        round_to=0.1,
+        validate=[Min(0)],
+    )
+    yield _sensor(
+        key="battery_max_discharge_current_limit",
+        address=4611,
+        name="Battery Max Discharge Current Limit",
+        device_class=SensorDeviceClass.CURRENT,
+        native_unit_of_measurement="A",
+        scale=0.1,
+        suggested_display_precision=1,
+        round_to=0.1,
+        validate=[Min(0)],
+    )
+    yield _sensor(
+        key="battery_system_fault_code",
+        address=4612,
+        name="Battery System Fault Code",
+        validate=[Min(0)],
+    )
+    yield _sensor(
+        key="battery_system_status_state",
+        address=4613,
+        name="Battery System Status State",
+        validate=[Min(0)],
+    )
+    yield _sensor(
+        key="battery_soh",
+        address=4625,
+        name="Battery SoH",
+        device_class=SensorDeviceClass.BATTERY,
+        native_unit_of_measurement="%",
+        scale=0.1,
+        suggested_display_precision=1,
+        round_to=0.1,
+        validate=[Range(0, 100)],
+    )
 
 
 def _bms_entities() -> Iterable[EntityFactory]:
@@ -1080,6 +1188,7 @@ def _bms_entities() -> Iterable[EntityFactory]:
             state_class=SensorStateClass.MEASUREMENT,
             native_unit_of_measurement="V",
             scale=0.01,
+            suggested_display_precision=2,
             round_to=0.01,
             validate=[Min(0)],
         )
@@ -1252,6 +1361,181 @@ def _bms_entities() -> Iterable[EntityFactory]:
     )
 
 
+def _ivem_configuration_entities() -> Iterable[EntityFactory]:
+    def _address(address: int) -> list[ModbusAddressSpec]:
+        return [ModbusAddressSpec(holding=address, models=Inv.IVEM)]
+
+    def _number(
+        *,
+        key: str,
+        address: int,
+        name: str,
+        min_value: float,
+        max_value: float,
+        step: float,
+        unit: str,
+        scale: float,
+        device_class: NumberDeviceClass | None = None,
+    ) -> EntityFactory:
+        return ModbusNumberDescription(
+            key=key,
+            address=_address(address),
+            name=name,
+            mode=NumberMode.BOX,
+            device_class=device_class,
+            native_min_value=min_value,
+            native_max_value=max_value,
+            native_step=step,
+            native_unit_of_measurement=unit,
+            scale=scale,
+            validate=[Range(min_value, max_value)],
+        )
+
+    def _select(*, key: str, address: int, name: str, options_map: dict[int, str]) -> EntityFactory:
+        return ModbusSelectDescription(
+            key=key,
+            address=_address(address),
+            name=name,
+            options_map=options_map,
+        )
+
+    disable_enable = {0: "Disable", 1: "Enable"}
+
+    yield _number(
+        key="battery_cutoff_voltage",
+        address=8479,
+        name="Battery Cut-Off Voltage",
+        min_value=21.0,
+        max_value=60.1,
+        step=0.1,
+        unit="V",
+        scale=0.1,
+    )
+    yield _number(
+        key="battery_cv_voltage",
+        address=8482,
+        name="Battery C.V. Charging Voltage",
+        min_value=21.0,
+        max_value=60.1,
+        step=0.1,
+        unit="V",
+        scale=0.1,
+    )
+    yield _number(
+        key="battery_float_voltage",
+        address=8483,
+        name="Battery Floating Charging Voltage",
+        min_value=21.0,
+        max_value=60.1,
+        step=0.1,
+        unit="V",
+        scale=0.1,
+    )
+    yield _number(
+        key="battery_max_charge_current",
+        address=8494,
+        name="Battery Max Charge Current",
+        min_value=10,
+        max_value=100,
+        step=1,
+        unit="A",
+        scale=1,
+        device_class=NumberDeviceClass.CURRENT,
+    )
+    yield _number(
+        key="battery_max_ac_charge_current",
+        address=8496,
+        name="Battery Max AC Charge Current",
+        min_value=10,
+        max_value=100,
+        step=1,
+        unit="A",
+        scale=1,
+        device_class=NumberDeviceClass.CURRENT,
+    )
+    yield _number(
+        key="battery_back_to_charge_voltage",
+        address=8534,
+        name="Battery Back To Charge Voltage",
+        min_value=21.0,
+        max_value=60.1,
+        step=0.1,
+        unit="V",
+        scale=0.1,
+    )
+    yield _number(
+        key="battery_back_to_discharge_voltage",
+        address=8537,
+        name="Battery Back To Discharge Voltage",
+        min_value=21.0,
+        max_value=60.1,
+        step=0.1,
+        unit="V",
+        scale=0.1,
+    )
+
+    yield _select(
+        key="ac_output_frequency",
+        address=8489,
+        name="AC Output Frequency",
+        options_map={0: "50Hz", 1: "60Hz"},
+    )
+    yield _select(
+        key="output_source_priority",
+        address=8490,
+        name="Output Source Priority",
+        options_map={0: "Utility First", 1: "Solar First", 2: "Solar Battery Utility"},
+    )
+    yield _select(
+        key="application_mode",
+        address=8491,
+        name="Application Mode",
+        options_map={0: "APL", 1: "UPS"},
+    )
+    yield _select(
+        key="charging_source_priority",
+        address=8492,
+        name="Charging Source Priority",
+        options_map={1: "Solar First", 2: "Solar and Utility First", 3: "Solar Only"},
+    )
+    yield _select(
+        key="battery_type",
+        address=8493,
+        name="Battery Type",
+        options_map={0: "AGM", 1: "Flood", 2: "User Defined", 3: "LiFePO4"},
+    )
+    yield _select(
+        key="buzzer",
+        address=8497,
+        name="Buzzer",
+        options_map=disable_enable,
+    )
+    yield _select(
+        key="overload_restart",
+        address=8499,
+        name="Overload Restart",
+        options_map=disable_enable,
+    )
+    yield _select(
+        key="over_temperature_restart",
+        address=8500,
+        name="Over Temperature Restart",
+        options_map=disable_enable,
+    )
+    yield _select(
+        key="lcd_backlight",
+        address=8501,
+        name="LCD Backlight",
+        options_map=disable_enable,
+    )
+    yield _select(
+        key="overload_to_bypass",
+        address=8503,
+        name="Overload To Bypass",
+        options_map=disable_enable,
+    )
+
+
 def _configuration_entities() -> Iterable[EntityFactory]:
     # Work Mode
     yield ModbusWorkModeSelectDescription(
@@ -1380,6 +1664,8 @@ ENTITIES: list[EntityFactory] = sorted(
         _inverter_entities(),
         _bms_entities(),
         _ivem_entities(),
+        _ivem_battery_entities(),
+        _ivem_configuration_entities(),
         _configuration_entities(),
         (description for x in CHARGE_PERIODS for description in x.entity_descriptions),
         REMOTE_CONTROL_DESCRIPTION.entity_descriptions,

@@ -7,6 +7,7 @@ import pytest
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.components.number import NumberEntity
 from homeassistant.components.select import SelectEntity
+from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import HomeAssistant
 from syrupy.assertion import SnapshotAssertion
@@ -20,6 +21,10 @@ from custom_components.fsolar_modbus.const import INVERTER_BASE
 from custom_components.fsolar_modbus.const import INVERTER_CONN
 from custom_components.fsolar_modbus.const import UNIQUE_ID_PREFIX
 from custom_components.fsolar_modbus.entities.entity_descriptions import ENTITIES
+from custom_components.fsolar_modbus.entities.modbus_lambda_sensor import ModbusLambdaSensorDescription
+from custom_components.fsolar_modbus.entities.modbus_number import ModbusNumberDescription
+from custom_components.fsolar_modbus.entities.modbus_sensor import ModbusSensorDescription
+from custom_components.fsolar_modbus.entities.modbus_select import ModbusSelectDescription
 from custom_components.fsolar_modbus.inverter_profiles import INVERTER_PROFILES
 from custom_components.fsolar_modbus.inverter_profiles import Version
 from custom_components.fsolar_modbus.inverter_profiles import create_entities
@@ -104,6 +109,62 @@ def test_entities(
     assert entities == snapshot_json
 
 
+def test_power_sensors_use_watts() -> None:
+    power_entities = [
+        entity_factory
+        for entity_factory in ENTITIES
+        if isinstance(entity_factory, (ModbusSensorDescription, ModbusLambdaSensorDescription))
+        and entity_factory.device_class == SensorDeviceClass.POWER
+    ]
+
+    assert power_entities
+
+    for entity_factory in power_entities:
+        assert entity_factory.native_unit_of_measurement == "W"
+        if isinstance(entity_factory, ModbusSensorDescription):
+            assert entity_factory.scale == 1.0
+
+
+def test_voltage_sensors_keep_precision() -> None:
+    def _sensor_description_for(
+        *, model: InverterModel, connection_type: ConnectionType, key: str
+    ) -> ModbusSensorDescription:
+        connection_type_profile = INVERTER_PROFILES[model].connection_types[connection_type]
+        inv = connection_type_profile.get_inv_for_version(None)
+
+        matches = [
+            entity_factory
+            for entity_factory in ENTITIES
+            if isinstance(entity_factory, ModbusSensorDescription)
+            and entity_factory.key == key
+            and entity_factory.serialize(inv, connection_type_profile.register_type) is not None
+        ]
+
+        assert len(matches) == 1
+        return matches[0]
+
+    assert _sensor_description_for(
+        model=InverterModel.IVEM,
+        connection_type=ConnectionType.AUX,
+        key="battery_voltage",
+    ).suggested_display_precision == 2
+    assert _sensor_description_for(
+        model=InverterModel.IVEM,
+        connection_type=ConnectionType.AUX,
+        key="bms_cv_voltage",
+    ).suggested_display_precision == 1
+    assert _sensor_description_for(
+        model=InverterModel.IVEM,
+        connection_type=ConnectionType.AUX,
+        key="bms_float_voltage",
+    ).suggested_display_precision == 1
+    assert _sensor_description_for(
+        model=InverterModel.IVEM,
+        connection_type=ConnectionType.AUX,
+        key="bms_cutoff_voltage",
+    ).suggested_display_precision == 1
+
+
 def test_ivem_entities_use_documented_registers_and_scales() -> None:
     connection_type_profile = INVERTER_PROFILES[InverterModel.IVEM].connection_types[ConnectionType.AUX]
     inv = connection_type_profile.get_inv_for_version(None)
@@ -118,7 +179,7 @@ def test_ivem_entities_use_documented_registers_and_scales() -> None:
         "type": "sensor",
         "key": "battery_voltage",
         "name": "Battery Voltage",
-        "addresses": [4360],
+        "addresses": [4621],
         "scale": 0.01,
         "signed": False,
     }
@@ -126,16 +187,16 @@ def test_ivem_entities_use_documented_registers_and_scales() -> None:
         "type": "sensor",
         "key": "battery_current",
         "name": "Battery Current",
-        "addresses": [4361],
-        "scale": None,
+        "addresses": [4620],
+        "scale": 0.1,
         "signed": True,
     }
     assert serialized_by_key["battery_soc"] == {
         "type": "sensor",
         "key": "battery_soc",
         "name": "Battery SoC",
-        "addresses": [4363],
-        "scale": None,
+        "addresses": [4624],
+        "scale": 0.1,
         "signed": False,
     }
     assert serialized_by_key["battery_power"] == {
@@ -143,7 +204,7 @@ def test_ivem_entities_use_documented_registers_and_scales() -> None:
         "key": "battery_power",
         "name": "Battery Power",
         "addresses": [4362],
-        "scale": 0.001,
+        "scale": 1.0,
         "signed": True,
     }
     assert serialized_by_key["battery_power_charge"] == {
@@ -151,7 +212,7 @@ def test_ivem_entities_use_documented_registers_and_scales() -> None:
         "key": "battery_power_charge",
         "name": "Battery Power Charge",
         "addresses": [4362],
-        "scale": 0.001,
+        "scale": 1.0,
         "signed": True,
     }
     assert serialized_by_key["battery_power_discharge"] == {
@@ -159,7 +220,7 @@ def test_ivem_entities_use_documented_registers_and_scales() -> None:
         "key": "battery_power_discharge",
         "name": "Battery Power Discharge",
         "addresses": [4362],
-        "scale": 0.001,
+        "scale": 1.0,
         "signed": True,
     }
     assert serialized_by_key["pv1_voltage"] == {
@@ -192,4 +253,140 @@ def test_ivem_entities_use_documented_registers_and_scales() -> None:
         "name": "Smart Port Status",
         "addresses": [4461],
         "states": ["Generator Input", "Smart Load Output"],
+    }
+
+
+def test_ivem_configuration_entities_use_documented_registers_and_values() -> None:
+    connection_type_profile = INVERTER_PROFILES[InverterModel.IVEM].connection_types[ConnectionType.AUX]
+    inv = connection_type_profile.get_inv_for_version(None)
+
+    serialized_by_key = {}
+    for entity_factory in ENTITIES:
+        serialized = entity_factory.serialize(inv, connection_type_profile.register_type)
+        if serialized is not None:
+            serialized_by_key[serialized["key"]] = serialized
+
+    assert serialized_by_key["battery_cutoff_voltage"] == {
+        "type": "number",
+        "key": "battery_cutoff_voltage",
+        "name": "Battery Cut-Off Voltage",
+        "addresses": [8479],
+        "scale": 0.1,
+    }
+    assert serialized_by_key["charging_source_priority"] == {
+        "type": "select",
+        "key": "charging_source_priority",
+        "name": "Charging Source Priority",
+        "addresses": [8492],
+        "values": {1: "Solar First", 2: "Solar and Utility First", 3: "Solar Only"},
+    }
+    assert serialized_by_key["buzzer"] == {
+        "type": "select",
+        "key": "buzzer",
+        "name": "Buzzer",
+        "addresses": [8497],
+        "values": {0: "Disable", 1: "Enable"},
+    }
+
+
+def test_ivem_configuration_entities_are_selects_or_numbers() -> None:
+    connection_type_profile = INVERTER_PROFILES[InverterModel.IVEM].connection_types[ConnectionType.AUX]
+    inv = connection_type_profile.get_inv_for_version(None)
+
+    factories = [
+        entity_factory
+        for entity_factory in ENTITIES
+        if entity_factory.serialize(inv, connection_type_profile.register_type) is not None
+        and entity_factory.key
+        in {
+            "ac_output_frequency",
+            "application_mode",
+            "battery_back_to_charge_voltage",
+            "battery_back_to_discharge_voltage",
+            "battery_cutoff_voltage",
+            "battery_cv_voltage",
+            "battery_float_voltage",
+            "battery_max_ac_charge_current",
+            "battery_max_charge_current",
+            "battery_type",
+            "buzzer",
+            "charging_source_priority",
+            "lcd_backlight",
+            "output_source_priority",
+            "over_temperature_restart",
+            "overload_restart",
+            "overload_to_bypass",
+        }
+    ]
+
+    assert factories
+    assert any(isinstance(entity_factory, ModbusSelectDescription) for entity_factory in factories)
+    assert any(isinstance(entity_factory, ModbusNumberDescription) for entity_factory in factories)
+
+
+def test_ivem_additional_battery_entities_use_documented_registers_and_scales() -> None:
+    connection_type_profile = INVERTER_PROFILES[InverterModel.IVEM].connection_types[ConnectionType.AUX]
+    inv = connection_type_profile.get_inv_for_version(None)
+
+    serialized_by_key = {}
+    for entity_factory in ENTITIES:
+        serialized = entity_factory.serialize(inv, connection_type_profile.register_type)
+        if serialized is not None:
+            serialized_by_key[serialized["key"]] = serialized
+
+    assert serialized_by_key["battery_line_voltage"] == {
+        "type": "sensor",
+        "key": "battery_line_voltage",
+        "name": "Battery Line Voltage",
+        "addresses": [4608],
+        "scale": 0.1,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_charge_discharge_limit_voltage"] == {
+        "type": "sensor",
+        "key": "battery_charge_discharge_limit_voltage",
+        "name": "Battery Charge/Discharge Limit Voltage",
+        "addresses": [4609],
+        "scale": 0.1,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_max_charge_current_limit"] == {
+        "type": "sensor",
+        "key": "battery_max_charge_current_limit",
+        "name": "Battery Max Charge Current Limit",
+        "addresses": [4610],
+        "scale": 0.1,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_max_discharge_current_limit"] == {
+        "type": "sensor",
+        "key": "battery_max_discharge_current_limit",
+        "name": "Battery Max Discharge Current Limit",
+        "addresses": [4611],
+        "scale": 0.1,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_system_fault_code"] == {
+        "type": "sensor",
+        "key": "battery_system_fault_code",
+        "name": "Battery System Fault Code",
+        "addresses": [4612],
+        "scale": None,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_system_status_state"] == {
+        "type": "sensor",
+        "key": "battery_system_status_state",
+        "name": "Battery System Status State",
+        "addresses": [4613],
+        "scale": None,
+        "signed": False,
+    }
+    assert serialized_by_key["battery_soh"] == {
+        "type": "sensor",
+        "key": "battery_soh",
+        "name": "Battery SoH",
+        "addresses": [4625],
+        "scale": 0.1,
+        "signed": False,
     }
